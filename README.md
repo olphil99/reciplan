@@ -1,68 +1,35 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Description
+ReciPlan is a recipe-based social media platform with many amazing features. Users can create a recipe and store it under their profile. They can also favorite other user's recipes and share them with their friends. The profile view includes other features, such as profile picture, name, and bio. Additionally, users can search for recipes and add them to their cart. Upon entering the cart view, the user can generate a custom grocery list that combines all the ingredients and amounts to allow for convenience. The recipe view also includes the option to convert units into smaller or larger quantities, based on how many servings you want to make tonight! Users will login with our password encrypted login, and they alone will have the option to update or delete their own recipes.
 
-## Available Scripts
+### Usefulness
+‘MyRecipes’ is somewhat of a similar application. There, you can upload your own recipes and rate other user's on a 5-star scale. However, they do not have a social media aspect, nor the grocery list generation feature. Furthermore, our webapp will be mobile responsive, designed to be able to seamlessly make it into a standalone application.
+The conversion of incredient amounts based off of serving size would also be a special function, as we have not seen it on existing recipe websites.
+Realness: We will start by populating our application with the Recipe box dataset which is scraped from sources such as Food Network, All Recipes, Epicurious. We will also include options for users to add new recipes and to make the grocery list.
 
-In the project directory, you can run:
+### Basic functions
+- Ability for users to create recipes by entering ingredients and amounts
+- Methods to edit/delete a recipe, edit/delete a user's profile, and to update a user's starred/favorite recipes
+- The recipe search function on the side bar
+- SQL Join: User Profiles with Favorites with Recipes to generate the data for the profile view
+- Store pictures of recipes and user icons
 
-### `yarn start`
+### Advanced functions
+#### SQL Function 1
+User Profiles
+- UserID, Name, PictureURL, Bio, Favorites, etc.
+- Has a column for Cart that contains RecipeIDs (from the MongoDB)
+Cart
+- RecipeIDs, Date, UserID
+- Trigger for every SELECT, if last update Date was > 30 days ago, return empty cart
+- Password encryption before storing/retrieving
+- SQL Join on the User Profiles and Cart table followed by a query to the MongoDB for recipe information
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Cart stores array of RecipeIDs that we use in a MongoDB find to return information to generate grocery lists
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+User Profiles stores an array of RecipeIDs that we use in a MongoDB find to display the recipe information on the page
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+#### NoSql (MongoDB) Function 2
+- Storing Recipe JSON Objects
+- Grocery list functionality that scans the cart and combines the quantities of ingredients from those recipes
+- Function to separate amounts from ingredients in scraped data
+- Function to convert amounts into different sizes and units in order to show smaller/larger serving sizes
