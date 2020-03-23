@@ -1,0 +1,19 @@
+I tried to generate some data relevant to users in this folder. 
+
+The following files are downloaded from https://eightportions.com/datasets/Recipes/:
+  - recipes_raw_nosource_ar.json
+  - recipes_raw_nosource_epi.json (what I actually used in generating the carts, ownership and etc..)
+  - recipes_raw_nosource_fn.json
+  
+The data I generated:
+  - users.txt: each line is usrID+usrName+Address
+  - ownership.txt: each line is usrID+recipeID
+  - favorites.txt: each line is usrID+recipeID
+  - cart.txt: each line is usrID+recipeID+dateUpdated
+
+To understand how I generated the above files, please refer to generating_more_data.py.
+
+What remains to do:
+1. I tried but could not crawl images from the above website. It directs me to https://github.com/rtlee9/recipe-box, which is not helpful in crawling either, since the page arragement of the website seems to have changed over the years, and I am not familiar with BeautifulSoup package. Alternatively, maybe we can manually add correct pictures for 10 recipes and set the rest to be the same picture?
+
+2. Generate some user profile pictures
