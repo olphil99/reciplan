@@ -7,6 +7,7 @@ def index(request):
     if request.method == 'POST':
         query = request.POST['query']
         return HttpResponseRedirect('/results/?query={0}'.format(query))
+    context = {}
     return render(request, 'homepage/homepage.html', context)
 
 def results(request):
