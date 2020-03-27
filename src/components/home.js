@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import '../css/home.css';
 import axios from 'axios';
-const API_URL = "http://localhost:8000/api/students/";
+const API_URL = "http://localhost:8000/homepage/";
 
 class Home extends Component {
   constructor(props) {

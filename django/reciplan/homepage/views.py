@@ -1,29 +1,46 @@
+import json
+
 from django.shortcuts import render
 from django.http import HttpResponse
-from . import utils
 
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from . import utils, serializers
+
+@api_view(['GET', 'POST'])
 def index(request):
     # Has a search bar, log-in button
-    if request.method == 'POST':
-        query = request.POST['query']
-        return HttpResponseRedirect('/results/?query={0}'.format(query))
-    context = {}
-    return render(request, 'homepage/homepage.html', context)
+    if request.method == 'GET':
+        mock_data = {
+            'name':'Andromeda',
+            'class':'CS411',
+            'teamNumber':37
+        }
 
+        return Response(json.dumps(mock_data))
+    elif request.method == 'POST':
+        searchQuery = request.POST['searchQuery']
+        # TODO: How do I send POST['searchQuery'] along to the results page with React
+
+@api_view(['GET', 'POST'])
 def results(request):
     # Page that shows list of search results
-    query = request.GET.get('query').strip().lower()
-    searchResults = utils.find_recipes(query)
+    searchQuery = request.GET.get('searchQuery').strip().lower()
+    searchResults = utils.find_recipes(searchQuery)
+    searchResults = json.dumps(searchResults)
     context = {
-        'query':query,
+        'searchQuery':searchQuery,
         'searchResults':searchResults
     }
+    context = json.dumps(context)
 
     if request.method == 'POST':
         selectedRecipeID = request.POST['selectedRecipe']
-        return HttpResponseRedirect('/recipe/?recipeID={0}'.format(selectedRecipeID))
+        # TODO: how to handle post requests with React
 
-    return render(request, 'homepage/results.html', context)
+    return Response(context)
 
 def recipe(request):
     # Page that shows the recipe selected from results
