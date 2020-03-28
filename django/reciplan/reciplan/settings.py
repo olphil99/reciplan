@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'homepage.apps.HomepageConfig',
+    'homepage', #'homepage.apps.HomepageConfig',
     'corsheaders',
     'rest_framework',
     'django.contrib.admin',

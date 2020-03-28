@@ -27,7 +27,7 @@ def index(request):
 @api_view(['GET', 'POST'])
 def results(request):
     # Page that shows list of search results
-    searchQuery = request.GET.get('searchQuery').strip().lower()
+    searchQuery = '' # request.GET.get('searchQuery').strip().lower() # TODO change the '' to the get request once we have something in the request
     searchResults = utils.find_recipes(searchQuery)
     searchResults = json.dumps(searchResults)
     context = {
@@ -42,6 +42,7 @@ def results(request):
 
     return Response(context)
 
+@api_view(['GET', 'POST'])
 def recipe(request):
     # Page that shows the recipe selected from results
     recipeID = request.GET.get('recipeID').strip().lower()
@@ -54,18 +55,26 @@ def recipe(request):
 
     return render(request, 'homepage/recipe.html', context)
 
+@api_view(['GET', 'POST'])
 def login(request):
     # Page used to login
-    return HttpResponse("login View")
+    context = json.dumps({})
+    return Response(context)
 
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def cart(request):
     # Cart of the logged in user
-    return HttpResponse("cart View")
+    context = json.dumps({})
+    return Response(context)
 
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def newRecipe(request):
     # Page to add a new recipe for a logged-in user
-    return HttpResponse("newRecipe View")
+    context = json.dumps({})
+    return Response(context)
 
+@api_view(['GET', 'POST'])
 def profile(request):
     # User's profile
-    return
+    context = json.dumps({})
+    return Response(context)
