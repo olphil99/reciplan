@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import '../css/home.css';
 import axios from 'axios';
-const API_URL = "http://localhost:8000/homepage/";
+import {SERVICE_URL} from '../utils.js';
 
 class Home extends Component {
   constructor(props) {
@@ -13,9 +13,10 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    axios.get(API_URL)
+    axios.get(`${SERVICE_URL}/homepage/results`)
     .then(res => {
-      this.setState({ ret: res.date });
+      console.log(res)
+      this.setState({ ret: res.data });
     })
     .catch(err => console.log(err));
   }
@@ -23,7 +24,7 @@ class Home extends Component {
   render() {
     return(
       <Container>
-        {JSON.parse(this.state.ret)}
+        {JSON.stringify(this.state.ret)}
       </Container>
     )
   }
