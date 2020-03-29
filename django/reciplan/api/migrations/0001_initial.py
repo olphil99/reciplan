@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Carts',
             fields=[
-                ('userID', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='homepage.Users')),
+                ('userID', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='api.Users')),
                 ('recipeIDs', models.CharField(max_length=1000)),
                 ('dateUpdated', models.DateTimeField()),
             ],
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserFavorites',
             fields=[
-                ('userID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='homepage.Users')),
+                ('userID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='api.Users')),
                 ('recipeID', models.CharField(max_length=50)),
             ],
             options={
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OwnsRecipes',
             fields=[
-                ('userID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='homepage.Users')),
+                ('userID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='api.Users')),
                 ('recipeID', models.CharField(max_length=50)),
             ],
             options={

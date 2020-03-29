@@ -53,7 +53,7 @@ def recipe(request):
         'recipeAuthor':recipeAuthor
     }
 
-    return render(request, 'homepage/recipe.html', context)
+    return render(request, 'api/recipe.html', context)
 
 @api_view(['GET', 'POST'])
 def login(request):

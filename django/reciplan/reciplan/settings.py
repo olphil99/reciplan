@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'homepage', #'homepage.apps.HomepageConfig',
+    'api', #'api.apps.apiConfig',
     'corsheaders',
     'rest_framework',
     'django.contrib.admin',
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'reciplan.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['homepage/templates'],
+        'DIRS': ['api/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
