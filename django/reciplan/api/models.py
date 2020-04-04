@@ -7,6 +7,7 @@ class Users(models.Model):
     bio = models.CharField(max_length=250)
     location = models.CharField(max_length=30)
     pictureURL = models.URLField()
+    password = models.CharField(max_length=20, null=False)
 
 class UserFavorites(models.Model):
     userID = models.ForeignKey(Users, on_delete=models.CASCADE, primary_key=True)
