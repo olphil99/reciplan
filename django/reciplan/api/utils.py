@@ -1,6 +1,8 @@
 # A place to write helper functions and SQL queries to aid functions such as:
 #   finding a recipe, adding a recipe to the database, adding a recipe to cart
 import json
+from django.db import models
+from .models import *
 
 def find_recipes(query):
     # returns a list of recipes that match the query
@@ -30,12 +32,23 @@ def delete_from_cart(recipeID):
 
 def authenticate_user(username, password):
     # check if username password combination exists
+    parameters = [username,password]
+    data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s AND password=%s', parameters)
+    print(type(data))
+    for r in data:
+        if username == r.userID and password == r.password: 
+            print(r.name)
+            return True
     # return true or false accordingly
     return False
 
 def add_user(username, password, name, bio, location, pictureURL):
     # add a new user to User table
+    parameters = [username, name, bio, location, pictureURL, password]
+    data = Users.objects.raw('INSERT INTO api_users (userID, name, bio, location, picture_URL, password) VALUES (%s,%s,%s,%s,%s,%s)', parameters)
     # return true if successful, false if unsuccessful
+    if data != None:
+        return True
     return False
 
 def get_user_metadata(loggedInUser):

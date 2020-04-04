@@ -60,28 +60,38 @@ def login(request):
     # Page used to login
     # TODO
     if request.method == 'POST':
-        username = request.GET.get('username').strip().lower()
-        password = request.GET.get('password').strip() # TODO: hash this password
-
+        #username = request.GET.get('username').strip().lower()
+        #password = request.GET.get('password').strip() # TODO: hash this password
+        username = 123
+        password = "passcode"
         userAuthenticated = utils.authenticate_user(username, password)
         if userAuthenticated:
             status = 'HTTP_202_ACCEPTED'
         else:
             status = 'HTTP_403_FORBIDDEN'
-
     context = json.dumps({})
     return Response(context)
 
 @api_view(['GET', 'POST'])
 def newUserRegistration(request):
     # Page used to create a new user
+    context = json.dumps({})
+
     if request.method == 'POST':
-        username = request.GET.get('username').strip().lower()
-        password = request.GET.get('password').strip() # TODO: Hash this password
-        name = request.GET.get('name').strip.lower()
-        bio = request.GET.get('bio').strip.lower()
-        location = request.GET.get('location').strip.lower()
-        pictureURL = request.GET.get('pictureURL').strip.lower()
+        #test = request.POST['username']
+        #username = request.POST.get("username").strip().lower()
+        #password = request.POST.get('password').strip() # TODO: Hash this password
+        #name = request.POST.get('name').strip.lower()
+        #bio = request.POST.get('bio').strip.lower()
+        #location = request.POST.get('location').strip.lower()
+        #pictureURL = request.POST.get('pictureURL').strip.lower()
+
+        username = 12333231
+        password = "pass"
+        name = "nam"
+        bio = "by"
+        location = "locator"
+        pictureURL = "picto"
 
         isCreated = utils.add_user(username, password, name, bio, location, pictureURL)
         if isCreated:
@@ -90,8 +100,6 @@ def newUserRegistration(request):
             status = 'HTTP_400_BAD_REQUEST'
 
         return Response(context, status=status)
-
-    context = json.dumps({})
     return Response(context)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
