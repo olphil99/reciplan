@@ -26,7 +26,7 @@ class OwnsRecipes(models.Model):
         unique_together = (('userID', 'recipeID'),)
 
 class Carts(models.Model):
-    userID = models.OneToOneField(Users, on_delete=models.CASCADE, primary_key=True)
+    userID = models.OneToOneField(Users, on_delete=models.CASCADE, primary_key=True, db_column='userID')
     recipeIDs = models.CharField(max_length=1000) # Can't find a way to store a list of items so we can just store the list as text and then write a python helper function to parse it when we extract it
     dateUpdated = models.DateTimeField()
 
@@ -34,3 +34,4 @@ class Carts(models.Model):
 # References:
 # Difference between Django ForeignKey, ManyToMany, OneToOne:
 # https://stackoverflow.com/questions/25386119/whats-the-difference-between-a-onetoone-manytomany-and-a-foreignkey-field-in-d
+# https://stackoverflow.com/questions/20909713/django-raw-query-must-include-the-primary-key

@@ -2,11 +2,13 @@
 #   finding a recipe, adding a recipe to the database, adding a recipe to cart
 import json
 from django.db import models
+from django.db import connection
 from .models import *
+import datetime
 
 def find_recipes(query):
     # returns a list of recipes that match the query
-    # runs a SQL query against our DB to find the closest matches
+    # runs a SQL query against our DB to find the closest matches (will this be mongo instead?)
     # input: query is a lower-case string
     return [{'recipeName':'pasta'}, {'recipeName':'rice'}] # Mocked the data for now
 
@@ -22,8 +24,21 @@ def add_recipe(recipeOwner, recipeTitle, recipeIngredients, recipeInstructions, 
     return True
 
 def get_cart_data(userID):
-    # Returns cartItems (list of recipeNames), cartDateUpdated for loggen-in user userID
-    return [], ''
+    # Returns cartItems (list of recipeNames), cartDateUpdated for logged-in user userID
+    userID = 1
+    date = str(datetime.datetime.now())
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE api_carts SET dateUpdated = %s WHERE userID = %s", [date,userID])
+        #row = cursor.fetchone()
+    data = Carts.objects.raw('SELECT * FROM api_carts WHERE userID=%s', [userID])
+    #print(type(data))
+    returnRecipes = []
+    for cart in data:
+        returnRecipes.extend(cart.recipeIDs.split("/"))
+    print(returnRecipes)
+    print(date)
+    return returnRecipes, date
+    #return [], ''
 
 def delete_from_cart(recipeID):
     # Remove given recipeID from Cart Table
@@ -32,6 +47,8 @@ def delete_from_cart(recipeID):
 
 def authenticate_user(username, password):
     # check if username password combination exists
+    username = 1
+    password = 'testpassword'
     parameters = [username,password]
     data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s AND password=%s', parameters)
     print(type(data))
