@@ -10,7 +10,7 @@ class Users(models.Model):
     password = models.CharField(max_length=20, null=False)
 
 class UserFavorites(models.Model):
-    userID = models.ForeignKey(Users, on_delete=models.CASCADE, primary_key=True)
+    userID = models.ForeignKey(Users, on_delete=models.CASCADE, primary_key=True, db_column='userID')
     recipeID = models.CharField(max_length=50)
 
     # workaround because Django doesnt have support for composite keys https://shashankvivek.in/2014/11/11/make-primary-key-with-two-or-more-field-in-django/
@@ -18,7 +18,7 @@ class UserFavorites(models.Model):
         unique_together = (('userID', 'recipeID'),)
 
 class OwnsRecipes(models.Model):
-    userID = models.ForeignKey(Users, on_delete=models.CASCADE, primary_key=True)
+    userID = models.ForeignKey(Users, on_delete=models.CASCADE, primary_key=True, db_column='userID')
     recipeID = models.CharField(max_length=50)
 
     # workaround because Django doesnt have support for composite keys https://shashankvivek.in/2014/11/11/make-primary-key-with-two-or-more-field-in-django/

@@ -114,13 +114,18 @@ def cart(request):
         context = json.dumps(context)
         return Response(context)
     elif request.method == 'POST': # deleting an item from cart
-        recipeID = request.GET.get('recipeToRemove').strip().lower()
-
+        #recipeID = request.POST.get('recipeToRemove').strip().lower()
+        #testing
+        recipeID = 'xvhiw'
         isDeleted = utils.delete_from_cart(recipeID)
         if isDeleted:
-            status = 'HTTP_201_CREATED'
+            #status = 'HTTP_201_CREATED'
+            #status must be integer
+            status = 201
         else:
-            status = 'HTTP_400_BAD_REQUEST'
+            #status = 'HTTP_400_BAD_REQUEST'
+            #status must be integer
+            status = 400
 
         context = json.dumps({})
         return Response(context, status=status)
@@ -151,10 +156,10 @@ def newRecipe(request):
 def profile(request):
     # User's profile
     context = json.dumps({})
-    userAuthenticated = False # TODO: add some way to autheticate user
+    userAuthenticated = True # TODO: add some way to autheticate user
     if userAuthenticated:
-        loggedInUser = '' # TODO: logged in userID
-        name, bio, location, pictureURL, listOfRecipeNames = get_user_metadata(loggedInUser)
+        loggedInUser = 1 # TODO: logged in userID
+        name, bio, location, pictureURL, listOfRecipeNames = utils.get_user_metadata(loggedInUser)
 
         context = json.dumps({'name':name, 'bio':bio, 'location':location, 'pictureURL':pictureURL, 'listOfRecipeNames':listOfRecipeNames})
 

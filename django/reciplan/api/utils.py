@@ -26,23 +26,22 @@ def add_recipe(recipeOwner, recipeTitle, recipeIngredients, recipeInstructions, 
 def get_cart_data(userID):
     # Returns cartItems (list of recipeNames), cartDateUpdated for logged-in user userID
     userID = 1
-    date = str(datetime.datetime.now())
-    with connection.cursor() as cursor:
-        cursor.execute("UPDATE api_carts SET dateUpdated = %s WHERE userID = %s", [date,userID])
-        #row = cursor.fetchone()
-    data = Carts.objects.raw('SELECT * FROM api_carts WHERE userID=%s', [userID])
-    #print(type(data))
+    data = Carts.objects.raw('SELECT * FROM api_carts WHERE userID=%s LIMIT 1', [userID])
     returnRecipes = []
+    date = ''
     for cart in data:
-        returnRecipes.extend(cart.recipeIDs.split("/"))
+        returnRecipes = cart.recipeIDs.split("/")
+        date = str(cart.dateUpdated)
     print(returnRecipes)
     print(date)
     return returnRecipes, date
-    #return [], ''
 
 def delete_from_cart(recipeID):
     # Remove given recipeID from Cart Table
     # return True if successful, false if unsuccessful
+    date = str(datetime.datetime.now())
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE api_carts SET recipeIDs = REPLACE(recipeIDs, %s, ''), dateUpdated = %s", [recipeID,date])
     return True
 
 def authenticate_user(username, password):
@@ -53,9 +52,8 @@ def authenticate_user(username, password):
     data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s AND password=%s', parameters)
     print(type(data))
     for r in data:
-        if username == r.userID and password == r.password: 
-            print(r.name)
-            return True
+        print(r.name)
+        return True
     # return true or false accordingly
     return False
 
@@ -64,14 +62,23 @@ def add_user(username, password, name, bio, location, pictureURL):
     count = Users.objects.count()+1
     print(count)
     parameters = [count, name, bio, location, pictureURL, password]
+    data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s', [count])
+    for user in data:
+        return False
     with connection.cursor() as cursor:
         cursor.execute('INSERT INTO api_users (userID, name, bio, location, pictureURL, password) VALUES (%s,%s,%s,%s,%s,%s)', parameters)
-    #data = Users.objects.raw('INSERT INTO api_users (userID, name, bio, location, picture_URL, password) VALUES (%s,%s,%s,%s,%s,%s)', parameters)
-    # return true if successful, false if unsuccessful
-    #if data != None:
-        #return True
     return True
 
 def get_user_metadata(loggedInUser):
     # returns name, bio, location, pictureURL, listOfRecipeNames of the loggedInUser
-    return '', '', '', '', ''
+    # for now returns recipe ids because mongo has not been started yet
+    users = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s LIMIT 1', [loggedInUser])
+    recipes = OwnsRecipes.objects.raw('SELECT * FROM api_ownsrecipes WHERE userID=%s', [loggedInUser])
+    for user in users:
+        recipeList = ''
+        for recipe in recipes:
+            recipeList += recipe.recipeID
+        print(user.name, user.bio)
+        return user.name, user.bio, user.location, user.pictureURL, recipeList
+    print("user not found")
+    return 'not found', 'not found', 'not found', 'not found', 'not found'
