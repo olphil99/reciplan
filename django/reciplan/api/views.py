@@ -96,8 +96,10 @@ def newUserRegistration(request):
         isCreated = utils.add_user(username, password, name, bio, location, pictureURL)
         if isCreated:
             status = 'HTTP_201_CREATED'
+            status = 201 # status must be int
         else:
             status = 'HTTP_400_BAD_REQUEST'
+            status = 400 # status must be int
 
         return Response(context, status=status)
     return Response(context)

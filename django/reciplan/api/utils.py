@@ -61,12 +61,16 @@ def authenticate_user(username, password):
 
 def add_user(username, password, name, bio, location, pictureURL):
     # add a new user to User table
-    parameters = [username, name, bio, location, pictureURL, password]
-    data = Users.objects.raw('INSERT INTO api_users (userID, name, bio, location, picture_URL, password) VALUES (%s,%s,%s,%s,%s,%s)', parameters)
+    count = Users.objects.count()+1
+    print(count)
+    parameters = [count, name, bio, location, pictureURL, password]
+    with connection.cursor() as cursor:
+        cursor.execute('INSERT INTO api_users (userID, name, bio, location, pictureURL, password) VALUES (%s,%s,%s,%s,%s,%s)', parameters)
+    #data = Users.objects.raw('INSERT INTO api_users (userID, name, bio, location, picture_URL, password) VALUES (%s,%s,%s,%s,%s,%s)', parameters)
     # return true if successful, false if unsuccessful
-    if data != None:
-        return True
-    return False
+    #if data != None:
+        #return True
+    return True
 
 def get_user_metadata(loggedInUser):
     # returns name, bio, location, pictureURL, listOfRecipeNames of the loggedInUser
