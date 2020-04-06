@@ -17,7 +17,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${SERVICE_URL}/homepage/results/`)
+    axios.get(`${SERVICE_URL}`)
     .then(res => {
       console.log(res)
       this.setState({ ret: res.data });
