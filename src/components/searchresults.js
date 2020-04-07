@@ -9,7 +9,7 @@ import { SERVICE_URL } from '../utils.js';
  * Contains a form to create a new recipe and POSTs it to our service.
  * @extends Component
  */
-class NewRecipe extends Component {
+class SearchResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,4 +111,4 @@ class NewRecipe extends Component {
   }
 }
 
-export default NewRecipe;
+export default SearchResults;
