@@ -52,8 +52,8 @@ class NewRecipe extends Component {
       source: null,
       pictureURL: this.state.pictureURL
     };
-    let response = postNewRecipe(recipeJson);
-    props.history.push('/search')
+    let response = this.postNewRecipe(recipeJson);
+    this.props.history.push('/search')
   }
 
   addIngredients() {
