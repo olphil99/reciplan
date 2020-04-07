@@ -5,6 +5,7 @@ import Home from './home.js';
 import NewRecipe from './newrecipe.js';
 import Navigation from './navigation.js';
 import SearchResults from './searchresults.js';
+import MyProfile from './myprofile.js';
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/newrecipe" component={NewRecipe} />
             <Route path="/results" component={SearchResults} />
+            <Route path="/profile" component={MyProfile} />
           </Switch>
         </React.Fragment>
       </Router>
