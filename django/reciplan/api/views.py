@@ -1,6 +1,6 @@
 import json
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
@@ -58,20 +58,15 @@ def recipe(request):
 @api_view(['GET', 'POST'])
 def login(request):
     # Page used to login
-    # TODO
-    #print(request.data)
     if request.method == 'POST':
         username = request.data.get('username').strip().lower()
         password = request.data.get('password').strip() # TODO: hash this password
-        #username = 123
-        #password = "passcode"
         userAuthenticated = utils.authenticate_user(username, password)
         if userAuthenticated:
-            status = 'HTTP_202_ACCEPTED'
+            stat = status.HTTP_202_ACCEPTED
         else:
-            status = 'HTTP_403_FORBIDDEN'
-    context = json.dumps({})
-    return Response(context)
+            stat = status.HTTP_403_FORBIDDEN
+    return Response(request.data, stat)
 
 @api_view(['GET', 'POST'])
 def newUserRegistration(request):
