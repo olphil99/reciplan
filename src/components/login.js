@@ -23,8 +23,10 @@ class Login extends Component {
   async signIn(user) {
     try {
       const response = await axios.post(`${SERVICE_URL}/login/`, user);
-      UserProfile.setUserObject(user);
-      return "ok";
+      const data = await response.json();
+      console.log(data)
+      UserProfile.setUserObject(data);
+      return data;
     } catch(e) {
       console.log('Encountered an error logging in.');
       // trigger either your password is wrong OR signup!

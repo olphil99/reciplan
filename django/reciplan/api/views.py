@@ -59,15 +59,16 @@ def recipe(request):
 def login(request):
     # Page used to login
     stat = status.HTTP_403_FORBIDDEN
+    user = None
     if request.method == 'POST':
         username = request.data.get('username').strip().lower()
         password = request.data.get('password').strip() # TODO: hash this password
-        userAuthenticated = utils.authenticate_user(username, password)
-        if userAuthenticated:
+        user = utils.authenticate_user(username, password)
+        if user != None:
             stat = status.HTTP_202_ACCEPTED
         else:
             stat = status.HTTP_403_FORBIDDEN
-    return Response(request.data, stat)
+    return Response(user, stat)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def newUserRegistration(request):
@@ -103,7 +104,7 @@ def newUserRegistration(request):
             stat = status.HTTP_400_BAD_REQUEST
     # DELETE USER
     elif request.method == 'DELETE':
-        isDeleted = utils.delete_user(username)
+        isDeleted = utils.delete_user(request.data) # this one only sends in username
         if isUpdated:
             stat = status.HTTP_200_OK
         else:

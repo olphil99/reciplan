@@ -50,11 +50,10 @@ def authenticate_user(username, password):
     data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s AND password=%s', parameters)
     #print(type(data))
     for r in data:
-        print(r.name)
-        return True
+        return r
     # return true or false accordingly
     print("did not return user")
-    return False
+    return None
 
 def add_user(username, password, name, bio, location, pictureURL):
     # add a new user to User table
@@ -67,8 +66,11 @@ def add_user(username, password, name, bio, location, pictureURL):
     return True
 
 def delete_user(username):
-    response = Users.objects.raw('DELETE FROM api_users WHERE userID=%s', [username])
-    return True
+    data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s', [username])
+    for user in data:
+        response = Users.objects.raw('DELETE FROM api_users WHERE userID=%s', [username])
+        return True
+    return False
 
 def update_user(username, password, name, bio, location, pictureURL):
     parameters = [name, bio, location, pictureURL, password, username]

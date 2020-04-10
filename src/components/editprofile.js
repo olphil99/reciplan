@@ -51,11 +51,11 @@ class EditProfile extends Component {
       location: this.state.location,
       bio: this.state.bio,
       pictureURL: this.state.pictureURL
-    }
+    };
     try {
       const response = await axios.put(`${SERVICE_URL}/newUserRegistration/`, updatedUser);
-      const data = await response.json();
-      return data;
+      UserProfile.setUserObject(updatedUser);
+      return "updated!";
     } catch(e) {
       alert('Encountered an error editing your profile.');
       return {};
@@ -63,7 +63,14 @@ class EditProfile extends Component {
   }
 
   async deleteAccount() {
-    // DELETE
+    try {
+      const response = await axios.delete(`${SERVICE_URL}/newUserRegistration/`, this.state.username);
+      const data = await response.json();
+      return data;
+    } catch(e) {
+      alert('Encountered an error editing your profile.');
+      return {};
+    }
   }
 
   render() {
