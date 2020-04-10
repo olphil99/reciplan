@@ -28,6 +28,14 @@ class MyProfile extends Component {
 
   render() {
     const {user, loggedIn} = this.state;
+    // let me = {
+    //   username: 'olivia',
+    //   password: 'password',
+    //   bio: '',
+    //   location: '',
+    //   pictureURL: ''
+    // }
+    // sessionStorage.setItem('user', me);
     let loginBtn = {};
     if (!loggedIn) {
       return(

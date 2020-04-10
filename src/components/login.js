@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NavLink as Link } from 'react-router-dom';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 // import '../css/profile.css';
 import axios from 'axios';
@@ -61,6 +62,9 @@ class Login extends Component {
           <FormGroup>
             <Label for="password">Password</Label>
             <Input name="password" id="password" placeholder="Enter Password" style={{width: '98%'}} required />
+          </FormGroup>
+          <FormGroup>
+            <Link to='/signup'>New user? Sign up!</Link>
           </FormGroup>
           <Row>
             <Col sm="12">

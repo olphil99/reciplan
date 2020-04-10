@@ -18,7 +18,7 @@ class NotLoggedIn extends Component {
     return(
       <Container>
         <div id='not-logged-in'>
-          <span>You're not logged in!</span>
+          <span>You're not logged in!</span><br />
           <span>{this.props.message}</span>
         </div>
       </Container>
