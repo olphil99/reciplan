@@ -59,11 +59,12 @@ def recipe(request):
 def login(request):
     # Page used to login
     # TODO
+    #print(request.data)
     if request.method == 'POST':
-        #username = request.GET.get('username').strip().lower()
-        #password = request.GET.get('password').strip() # TODO: hash this password
-        username = 123
-        password = "passcode"
+        username = request.data.get('username').strip().lower()
+        password = request.data.get('password').strip() # TODO: hash this password
+        #username = 123
+        #password = "passcode"
         userAuthenticated = utils.authenticate_user(username, password)
         if userAuthenticated:
             status = 'HTTP_202_ACCEPTED'

@@ -15,20 +15,18 @@ import { SERVICE_URL, UserProfile } from '../utils.js';
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      userid: '',
-      password: '',
-      bio: ''
-    }
     this.validateNewUser = this.validateNewUser.bind(this);
     this.postUser = this.postUser.bind(this);
   }
 
   async postUser(user) {
     try {
-      const response = await axios.post(`${SERVICE_URL}/results/`, user); // change to an updated url
-      const data = await response.json();
-      return data;
+      const response = await axios.post(`${SERVICE_URL}/login/`, user); // change to an updated url
+      //console.log(response);
+      //const data = await response.json();
+      //console.log(data);
+      //return data;
+      return "ok";
     } catch(e) {
       console.log('Encountered an error posting a new user.');
       return {};
@@ -43,9 +41,8 @@ class Login extends Component {
     // get the password
     let userJson = {
       creatorId: 'makingNewLogin',
-      userid: form['userid'].value,
+      username: form['userid'].value,
       password: form['password'].value,
-      bio: form['bio'].value
     };
     let response = this.postUser(userJson);
     // this.props.history.push('/search')
@@ -66,10 +63,6 @@ class Login extends Component {
           <FormGroup>
             <Label for="password">Password</Label>
             <Input name="password" id="password" placeholder="Enter Password" style={{width: '98%'}} required />
-          </FormGroup>
-          <FormGroup>
-            <Label for="bio">Bio</Label>
-            <Input name="bio" id="bio" placeholder="Enter Bio" style={{width: '98%'}} required />
           </FormGroup>
           <Row>
             <Col sm="12">

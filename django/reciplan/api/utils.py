@@ -46,8 +46,6 @@ def delete_from_cart(recipeID):
 
 def authenticate_user(username, password):
     # check if username password combination exists
-    username = 1
-    password = 'testpassword'
     parameters = [username,password]
     data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s AND password=%s', parameters)
     print(type(data))
@@ -55,6 +53,7 @@ def authenticate_user(username, password):
         print(r.name)
         return True
     # return true or false accordingly
+    print("did not return user")
     return False
 
 def add_user(username, password, name, bio, location, pictureURL):
