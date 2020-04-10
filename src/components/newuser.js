@@ -17,10 +17,10 @@ class NewUser extends Component {
 
   async signUp(user) {
     try {
-      const response = await axios.post(`${SERVICE_URL}/login/`, user); // whatever the newuser url is
+      const response = await axios.post(`${SERVICE_URL}/newUserRegistration/`, user); // whatever the newuser url is
       return "ok";
     } catch(e) {
-      console.log('Encountered an error logging in.');
+      console.log('Encountered an error registering new user.');
       return {};
     }
   }
@@ -35,6 +35,10 @@ class NewUser extends Component {
       creatorId: 'makingNewLogin',
       username: form['userid'].value,
       password: form['password'].value,
+      name: form['name'].value,
+      location: form['location'].value,
+      bio: form['bio'].value,
+      pictureURL: form['pictureURL'].value
     };
     let response = this.signUp(userJson);
     // this.props.history.push('/search')
@@ -56,6 +60,22 @@ class NewUser extends Component {
           <FormGroup>
             <Label for="password">Password</Label>
             <Input name="password" id="password" placeholder="Enter Password" style={{width: '98%'}} required />
+          </FormGroup>
+          <FormGroup>
+            <Label for="name">Name</Label>
+            <Input name="name" id="name" placeholder="Enter Name" style={{width: '98%'}} required/>
+          </FormGroup>
+          <FormGroup>
+            <Label for="bio">Bio</Label>
+            <Input name="bio" id="bio" placeholder="Enter Bio" style={{width: '98%'}} required/>
+          </FormGroup>
+          <FormGroup>
+            <Label for="location">Location</Label>
+            <Input name="location" id="location" placeholder="Enter Location" style={{width: '98%'}} required/>
+          </FormGroup>
+          <FormGroup>
+            <Label for="pictureURL">Picture URL</Label>
+            <Input name="pictureURL" id="pictureURL" placeholder="Enter Picture URL" style={{width: '98%'}} required/>
           </FormGroup>
           <Row>
             <Col sm="12">

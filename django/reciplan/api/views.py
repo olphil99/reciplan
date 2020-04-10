@@ -78,17 +78,17 @@ def newUserRegistration(request):
         #test = request.POST['username']
         username = request.data.get("username").strip().lower()
         password = request.data.get('password').strip() # TODO: Hash this password
-        #name = request.POST.get('name').strip.lower()
-        #bio = request.POST.get('bio').strip.lower()
-        #location = request.POST.get('location').strip.lower()
-        #pictureURL = request.POST.get('pictureURL').strip.lower()
+        name = request.data.get('name').strip().lower()
+        bio = request.data.get('bio').strip().lower()
+        location = request.data.get('location').strip().lower()
+        pictureURL = request.data.get('pictureURL').strip().lower()
 
         #username = 12333231
         #password = "pass"
-        name = None #"nam"
-        bio = None #"by"
-        location = None #"locator"
-        pictureURL = None #"picto"
+        #name = None #"nam"
+        #bio = None #"by"
+        #location = None #"locator"
+        #pictureURL = None #"picto"
 
         isCreated = utils.add_user(username, password, name, bio, location, pictureURL)
         if isCreated:
