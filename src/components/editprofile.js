@@ -65,8 +65,9 @@ class EditProfile extends Component {
   async deleteAccount() {
     try {
       const response = await axios.delete(`${SERVICE_URL}/newUserRegistration/`, this.state.username);
-      const data = await response.json();
-      return data;
+      UserProfile.setUserObject(null);
+      this.props.history.push('/signup')
+      return "deleted";
     } catch(e) {
       alert('Encountered an error editing your profile.');
       return {};

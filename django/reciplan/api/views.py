@@ -105,7 +105,7 @@ def newUserRegistration(request):
     # DELETE USER
     elif request.method == 'DELETE':
         isDeleted = utils.delete_user(request.data) # this one only sends in username
-        if isUpdated:
+        if isDeleted:
             stat = status.HTTP_200_OK
         else:
             stat = status.HTTP_400_BAD_REQUEST

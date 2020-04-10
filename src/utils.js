@@ -14,6 +14,7 @@ var UserProfile = (function() {
   };
 
   var setUserObject = function(user) {
+    if (!user) { sessionStorage.setItem('user', null); return; }
     userObj = user;
     userName = user.username;
     sessionStorage.setItem('user', JSON.stringify(user));

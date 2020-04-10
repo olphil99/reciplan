@@ -73,11 +73,11 @@ def add_user(username, password, name, bio, location, pictureURL):
     return True
 
 def delete_user(username):
-    data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s', [username])
-    for user in data:
-        response = Users.objects.raw('DELETE FROM api_users WHERE userID=%s', [username])
-        return True
-    return False
+    # data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s', [username])
+    # for user in data:
+    response = Users.objects.raw('DELETE FROM api_users WHERE userID=%s', [username])
+    return True
+    # return False
 
 def update_user(username, password, name, bio, location, pictureURL):
     parameters = [name, bio, location, pictureURL, password, username]
