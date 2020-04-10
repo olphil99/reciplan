@@ -37,6 +37,9 @@ class Navigation extends Component {
               <NavItem>
                 <NavLink href="/cart/"><FontAwesomeIcon icon={faShoppingCart} /></NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink href="/login/" id="login-btn">Log In</NavLink>
+              </NavItem>
             </Nav>
           </Collapse>
         </Navbar>

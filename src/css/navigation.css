@@ -45,6 +45,19 @@
   }
 }
 
+#login-btn {
+  border: 1px solid #a3a3a3;
+  border-radius: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  background-color: #e6e081;
+  color: black !important;
+}
+
+#login-btn:hover {
+  background-color: #dbd67b;
+}
+
 /* Mobile */
 @media (max-width: 767px) {
   /* .collapsing.navbar-collapse {
