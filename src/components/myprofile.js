@@ -39,7 +39,49 @@ class MyProfile extends Component {
     } else {
       return(
         <Container>
-          <span>{user.username}</span>
+          <Row>
+            <img src={user.pictureURL} alt="Smiley face" height="42" width="42" class="insert-picture"/>
+          </Row>
+          <Row>
+            <Col class="col-3">
+              Username
+            </Col>
+            <Col class="col-3">
+              <span>{user.username}</span>
+            </Col>
+          </Row>
+          <Row>
+            <Col class="col-3">
+              Name
+            </Col>
+            <Col>
+              <span>{user.name}</span>
+            </Col>
+          </Row>
+          <Row>
+            <Col class="col-3">
+              Bio
+            </Col>
+            <Col>
+              <span>{user.bio}</span>
+            </Col>
+          </Row>
+          <Row>
+            <Col class="col-3">
+              Location
+            </Col>
+            <Col>
+              <span>{user.location}</span>
+            </Col>
+          </Row>
+          <Row>
+            <Col class="col-3">
+              Picture
+            </Col>
+            <Col>
+              <span>{user.pictureURL}</span>
+            </Col>
+          </Row>
         </Container>
       )
     }
