@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 // import '../css/profile.css';
 import axios from 'axios';
-import { SERVICE_URL } from '../utils.js';
+import UserProfile, { SERVICE_URL } from '../utils.js';
 
 /**
  * This is the page that pops up when a user needs to log in.

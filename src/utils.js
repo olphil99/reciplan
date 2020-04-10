@@ -10,7 +10,7 @@ var UserProfile = (function() {
   };
 
   var getUserObject = function() {
-    return userObj;
+    return sessionStorage.getItem('user');
   };
 
   var setUserObject = function(user) {
