@@ -40,6 +40,7 @@ class App extends Component {
             <Route path="/cart" component={Cart} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={NewUser} />
+            <Route path="/editprofile" component={EditProfile} />
           </Switch>
         </React.Fragment>
       </Router>

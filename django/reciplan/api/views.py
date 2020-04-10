@@ -69,11 +69,10 @@ def login(request):
             stat = status.HTTP_403_FORBIDDEN
     return Response(request.data, stat)
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def newUserRegistration(request):
-    # Page used to create a new user
-    #context = json.dumps({})
     stat = status.HTTP_403_FORBIDDEN
+    # CREATE USER
     if request.method == 'POST':
         #test = request.POST['username']
         username = request.data.get("username").strip().lower()
@@ -83,18 +82,33 @@ def newUserRegistration(request):
         location = request.data.get('location').strip().lower()
         pictureURL = request.data.get('pictureURL').strip().lower()
 
-        #username = 12333231
-        #password = "pass"
-        #name = None #"nam"
-        #bio = None #"by"
-        #location = None #"locator"
-        #pictureURL = None #"picto"
-
         isCreated = utils.add_user(username, password, name, bio, location, pictureURL)
         if isCreated:
-            stat = status.HTTP_202_ACCEPTED
+            stat = status.HTTP_201_CREATED
         else:
             stat = status.HTTP_400_BAD_REQUEST
+    # UPDATE USER
+    elif request.method == 'PUT':
+        username = request.data.get("username").strip().lower()
+        password = request.data.get('password').strip() # TODO: Hash this password
+        name = request.data.get('name').strip().lower()
+        bio = request.data.get('bio').strip().lower()
+        location = request.data.get('location').strip().lower()
+        pictureURL = request.data.get('pictureURL').strip().lower()
+
+        isUpdated = utils.update_user(username, password, name, bio, location, pictureURL)
+        if isUpdated:
+            stat = status.HTTP_200_OK
+        else:
+            stat = status.HTTP_400_BAD_REQUEST
+    # DELETE USER
+    elif request.method == 'DELETE':
+        isDeleted = utils.delete_user(username)
+        if isUpdated:
+            stat = status.HTTP_200_OK
+        else:
+            stat = status.HTTP_400_BAD_REQUEST
+    # return status based on previous actions or HTTP_403_FORBIDDEN
     return Response(request.data, stat)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])

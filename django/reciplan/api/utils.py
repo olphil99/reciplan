@@ -66,6 +66,19 @@ def add_user(username, password, name, bio, location, pictureURL):
         cursor.execute('INSERT INTO api_users (userID, name, bio, location, pictureURL, password) VALUES (%s,%s,%s,%s,%s,%s)', parameters)
     return True
 
+def delete_user(username):
+    response = Users.objects.raw('DELETE FROM api_users WHERE userID=%s', [username])
+    return True
+
+def update_user(username, password, name, bio, location, pictureURL):
+    parameters = [name, bio, location, pictureURL, password, username]
+    data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s', [username])
+    for user in data:
+        with connection.cursor() as cursor:
+            cursor.execute('UPDATE api_users SET name=%s, bio=%s, location=%s, pictureURL=%s, password=%s WHERE userID=%s', parameters)
+        return True
+    return False
+
 def get_user_metadata(loggedInUser):
     # returns name, bio, location, pictureURL, listOfRecipeNames of the loggedInUser
     # for now returns recipe ids because mongo has not been started yet
