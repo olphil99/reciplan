@@ -23,8 +23,7 @@ class Login extends Component {
   async signIn(user) {
     try {
       const response = await axios.post(`${SERVICE_URL}/login/`, user);
-      const data = await response.json();
-      console.log(data)
+      const data = response.data;
       UserProfile.setUserObject(data);
       return data;
     } catch(e) {

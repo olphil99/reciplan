@@ -48,9 +48,16 @@ def authenticate_user(username, password):
     # check if username password combination exists
     parameters = [username,password]
     data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s AND password=%s', parameters)
-    #print(type(data))
     for r in data:
-        return r
+        obj = {
+            'username': r.userID,
+            'name': r.name,
+            'password': r.password,
+            'location': r.location,
+            'bio': r.bio,
+            'pictureURL': r.pictureURL
+        }
+        return obj
     # return true or false accordingly
     print("did not return user")
     return None
