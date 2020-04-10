@@ -6,6 +6,7 @@ import NewRecipe from './newrecipe.js';
 import Navigation from './navigation.js';
 import SearchResults from './searchresults.js';
 import MyProfile from './myprofile.js';
+import EditProfile from './editprofile.js';
 import Cart from './cart.js';
 import Login from './login.js';
 import NewUser from './newuser.js';

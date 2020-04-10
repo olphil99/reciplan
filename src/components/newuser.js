@@ -17,7 +17,8 @@ class NewUser extends Component {
 
   async signUp(user) {
     try {
-      const response = await axios.post(`${SERVICE_URL}/newUserRegistration/`, user); // whatever the newuser url is
+      const response = await axios.post(`${SERVICE_URL}/newUserRegistration/`, user);
+      UserProfile.setUserObject(user);
       return "ok";
     } catch(e) {
       console.log('Encountered an error registering new user.');
