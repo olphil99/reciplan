@@ -8,6 +8,7 @@ import SearchResults from './searchresults.js';
 import MyProfile from './myprofile.js';
 import Cart from './cart.js';
 import Login from './login.js';
+import NewUser from './newuser.js';
 
 class App extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class App extends Component {
             <Route path="/profile" component={MyProfile} />
             <Route path="/cart" component={Cart} />
             <Route path="/login" component={Login} />
+            <Route path="/signup" component={NewUser} />
           </Switch>
         </React.Fragment>
       </Router>

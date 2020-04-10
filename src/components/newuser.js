@@ -5,51 +5,46 @@ import axios from 'axios';
 import UserProfile, { SERVICE_URL } from '../utils.js';
 
 /**
- * This is the page that pops up when a user needs to log in.
- * It calls the 'redirect' prop to return the user to the application.
  *
- * This component makes a POST call to the API to log a user in,
- * and a POST call to create a new user.
  * @extends Component
  */
-class Login extends Component {
+class NewUser extends Component {
   constructor(props) {
     super(props);
-    this.validateUser = this.validateUser.bind(this);
-    this.signIn = this.signIn.bind(this);
+    this.validateNewUser = this.validateNewUser.bind(this);
+    this.signUp = this.signUp.bind(this);
   }
 
-  async signIn(user) {
+  async signUp(user) {
     try {
-      const response = await axios.post(`${SERVICE_URL}/login/`, user);
-      UserProfile.setUserObject(user);
+      const response = await axios.post(`${SERVICE_URL}/login/`, user); // whatever the newuser url is
       return "ok";
     } catch(e) {
       console.log('Encountered an error logging in.');
-      // trigger either your password is wrong OR signup!
       return {};
     }
   }
 
   // build the json from the form values and validate them
-  async validateUser(event) {
+  async validateNewUser(event) {
     event.preventDefault();
     let form = event.target;
-    // console.log(form['userid'].value);
+    console.log(form['userid'].value);
     // get the password
     let userJson = {
       creatorId: 'makingNewLogin',
       username: form['userid'].value,
       password: form['password'].value,
     };
-    let response = this.signIn(userJson);
+    let response = this.signUp(userJson);
     // this.props.history.push('/search')
   }
 
   render() {
     return(
       <Container>
-        <Form onSubmit={this.validateUser}>
+        <Form onSubmit={this.validateNewUser}>
+          <h1>Create a new profile</h1>
           <FormGroup>
             <Row>
               <Col sm="9">
@@ -73,4 +68,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default NewUser;
