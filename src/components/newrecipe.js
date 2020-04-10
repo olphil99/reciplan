@@ -38,6 +38,7 @@ class NewRecipe extends Component {
   async validateRecipe(event) {
     event.preventDefault();
     let form = event.target;
+    console.log(form['recipe-name'].value);
     // get the ingredients
     let ingredients = [];
     this.state.ingredientRows.map(child => {
@@ -46,14 +47,14 @@ class NewRecipe extends Component {
     })
     let recipeJson = {
       creatorId: 'test',
-      title: event['recipe-name'].value,
+      title: form['recipe-name'].value,
       ingredients: ingredients,
-      instructions: event['instructions'].value,
+      instructions: form['instructions'].value,
       source: null,
       pictureURL: this.state.pictureURL
     };
     let response = this.postNewRecipe(recipeJson);
-    this.props.history.push('/search')
+    // this.props.history.push('/search')
   }
 
   addIngredients() {

@@ -48,7 +48,7 @@ code {
   }
 }
 
-#login-window {
+/* #login-window {
   height: 100vh;
   width: 100vw;
   position: fixed;
@@ -56,4 +56,4 @@ code {
   background-color: white;
   left: 0;
   top: 0;
-}
+} */

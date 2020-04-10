@@ -1,25 +1,32 @@
-export const SERVICE_URL = 'http://127.0.0.1:8000/api/';
+export const SERVICE_URL = 'http://127.0.0.1:8000/api';
 
 // USER PROFILE 'CLASS'
 var UserProfile = (function() {
   var userName = "";
+  var userObj = {};
 
   var getName = function() {
     return userName;
   };
 
-  var setName = function(name) {
-    userName = name;
-    sessionStorage.setItem('userName', name);
+  var getUserObject = function() {
+    return userObj;
+  };
+
+  var setUserObject = function(user) {
+    userObj = user;
+    userName = user.username;
+    sessionStorage.setItem('user', user);
   };
 
   var isLoggedIn = function() {
-    return (sessionStorage.getItem('userName') != null);
-  }
+    return (sessionStorage.getItem('user') != null);
+  };
 
   return {
     getName: getName,
-    setName: setName,
+    setUserObject: setUserObject,
+    getUserObject: getUserObject,
     isLoggedIn: isLoggedIn
   }
 })();
