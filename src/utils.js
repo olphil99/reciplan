@@ -10,13 +10,13 @@ var UserProfile = (function() {
   };
 
   var getUserObject = function() {
-    return sessionStorage.getItem('user');
+    return JSON.parse(sessionStorage.getItem('user'));
   };
 
   var setUserObject = function(user) {
     userObj = user;
     userName = user.username;
-    sessionStorage.setItem('user', user);
+    sessionStorage.setItem('user', JSON.stringify(user));
   };
 
   var isLoggedIn = function() {

@@ -28,6 +28,7 @@ class MyProfile extends Component {
 
   render() {
     const {user, loggedIn} = this.state;
+    console.log(user)
     let loginBtn = {};
     if (!loggedIn) {
       return(
