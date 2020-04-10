@@ -58,10 +58,8 @@ def authenticate_user(username, password):
 
 def add_user(username, password, name, bio, location, pictureURL):
     # add a new user to User table
-    count = Users.objects.count()+1
-    print(count)
-    parameters = [count, name, bio, location, pictureURL, password]
-    data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s', [count])
+    parameters = [username, name, bio, location, pictureURL, password]
+    data = Users.objects.raw('SELECT * FROM api_users WHERE userID=%s', [username])
     for user in data:
         return False
     with connection.cursor() as cursor:

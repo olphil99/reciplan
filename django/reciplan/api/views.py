@@ -58,6 +58,7 @@ def recipe(request):
 @api_view(['GET', 'POST'])
 def login(request):
     # Page used to login
+    stat = status.HTTP_403_FORBIDDEN
     if request.method == 'POST':
         username = request.data.get('username').strip().lower()
         password = request.data.get('password').strip() # TODO: hash this password
@@ -71,34 +72,30 @@ def login(request):
 @api_view(['GET', 'POST'])
 def newUserRegistration(request):
     # Page used to create a new user
-    context = json.dumps({})
-
+    #context = json.dumps({})
+    stat = status.HTTP_403_FORBIDDEN
     if request.method == 'POST':
         #test = request.POST['username']
-        #username = request.POST.get("username").strip().lower()
-        #password = request.POST.get('password').strip() # TODO: Hash this password
+        username = request.data.get("username").strip().lower()
+        password = request.data.get('password').strip() # TODO: Hash this password
         #name = request.POST.get('name').strip.lower()
         #bio = request.POST.get('bio').strip.lower()
         #location = request.POST.get('location').strip.lower()
         #pictureURL = request.POST.get('pictureURL').strip.lower()
 
-        username = 12333231
-        password = "pass"
-        name = "nam"
-        bio = "by"
-        location = "locator"
-        pictureURL = "picto"
+        #username = 12333231
+        #password = "pass"
+        name = None #"nam"
+        bio = None #"by"
+        location = None #"locator"
+        pictureURL = None #"picto"
 
         isCreated = utils.add_user(username, password, name, bio, location, pictureURL)
         if isCreated:
-            status = 'HTTP_201_CREATED'
-            status = 201 # status must be int
+            stat = status.HTTP_202_ACCEPTED
         else:
-            status = 'HTTP_400_BAD_REQUEST'
-            status = 400 # status must be int
-
-        return Response(context, status=status)
-    return Response(context)
+            stat = status.HTTP_400_BAD_REQUEST
+    return Response(request.data, stat)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def cart(request):
