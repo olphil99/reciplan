@@ -12,11 +12,11 @@ import Login from './login.js';
 class App extends Component {
   constructor(props) {
     super(props);
-    let forceLogin = false;
-    if (!UserProfile.isLoggedIn()) {
-      forceLogin = true;
-    }
-    this.state = { forceLogin: forceLogin };
+    // let forceLogin = false;
+    // if (!UserProfile.isLoggedIn()) {
+    //   forceLogin = true;
+    // }
+    // this.state = { forceLogin: forceLogin };
     this.redirect = this.redirect.bind(this);
   }
 
@@ -36,6 +36,7 @@ class App extends Component {
             <Route path="/results" component={SearchResults} />
             <Route path="/profile" component={MyProfile} />
             <Route path="/cart" component={Cart} />
+            <Route path="/login" component={Login} />
           </Switch>
         </React.Fragment>
       </Router>
