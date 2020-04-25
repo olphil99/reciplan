@@ -25,7 +25,7 @@ def get_recipe_data(recipeID):
     recipeIngredients = data[0].ingredients
     recipeInstructions = data[0].instructions
     recipePictureURL = data[0].picture_link
-    data = Recipes.objects.raw('SELECT * FROM api_ownsrecipes WHERE recipeID=%s', [recipeID])
+    data = OwnsRecipes.objects.raw('SELECT * FROM api_ownsrecipes WHERE recipeID=%s', [recipeID])
     recipeAuthor = data[0].userID
     return recipeAuthor, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL
 
