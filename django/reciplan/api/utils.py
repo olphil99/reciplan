@@ -8,19 +8,37 @@ import datetime
 
 def find_recipes(query):
     # returns a list of recipes that match the query
-    # runs a SQL query against our DB to find the closest matches (will this be mongo instead?)
+    # runs a SQL query against our DB to find the closest matches
     # input: query is a lower-case string
-    return [{'recipeName':'pasta'}, {'recipeName':'rice'}] # Mocked the data for now
+    data = Recipes.objects.raw('SELECT * FROM api_recipes WHERE title CONTAINS %s', [query])
+    recipeNames = []
+    for recipe in data:
+        recipeNames.append({'recipeName':recipe.title})
+    return recipeNames
 
 def get_recipe_data(recipeID):
     # returns recipeAuthor, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL
     # input: recipeID
-    # Write SQL/MongoDB query here to find the recipe data
-    return '', '', '', '', ''
+    # Write SQL query here to find the recipe data
+    data = Recipes.objects.raw('SELECT * FROM api_recipes WHERE recipeID=%s', [recipeID])
+    recipeTitle = data[0].title
+    recipeIngredients = data[0].ingredients
+    recipeInstructions = data[0].instructions
+    recipePictureURL = data[0].picture_link
+    data = Recipes.objects.raw('SELECT * FROM api_ownsrecipes WHERE recipeID=%s', [recipeID])
+    recipeAuthor = data[0].userID
+    return recipeAuthor, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL
 
 def add_recipe(recipeOwner, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL):
-    # Adds a new recipe to MongoDB
-    # return True if successful, false if unsuccessful
+    # Adds a new recipe to SQL database
+    # return True if successful, False if unsuccessful
+    # generate new recipe id
+    newrecid = recipeOwner + recipeTitle + recipePictureURL
+    newrecid = newrecid.replace(" ", "")
+    with connection.cursor() as cursor:
+        cursor.execute('INSERT INTO api_recipes (recipeID, title, ingredients, instructions, picture_link) VALUES (%s,%s,%s,%s,%s)', [newrecid,recipeTitle,recipeIngredients,recipeInstructions,recipePictureURL])
+    with connection.cursor() as cursor:
+        cursor.execute('INSERT INTO api_ownsrecipes (userID, recipeID) VALUES (%s,%s)', [recipeOwner,newrecid])
     return True
 
 def get_cart_data(userID):
