@@ -30,6 +30,13 @@ class Carts(models.Model):
     recipeIDs = models.CharField(max_length=1000) # Can't find a way to store a list of items so we can just store the list as text and then write a python helper function to parse it when we extract it
     dateUpdated = models.DateTimeField()
 
+class Recipes(models.Model):
+    recipeID = models.CharField(max_length=50, primary_key=True, db_column='recipeID')
+    title = models.CharField(max_length=50)
+    ingredients = models.TextField()
+    instructions = models.TextField()
+    pictureLink = models.ImageField(upload_to='recipeImages/')
+
 
 # References:
 # Difference between Django ForeignKey, ManyToMany, OneToOne:

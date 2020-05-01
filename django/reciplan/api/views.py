@@ -128,11 +128,9 @@ def cart(request):
         isDeleted = utils.delete_from_cart(recipeID)
         if isDeleted:
             #status = 'HTTP_201_CREATED'
-            #status must be integer
             status = 201
         else:
             #status = 'HTTP_400_BAD_REQUEST'
-            #status must be integer
             status = 400
 
         context = json.dumps({})
