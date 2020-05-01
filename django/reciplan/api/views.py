@@ -58,21 +58,21 @@ def recipe(request):
 @api_view(['GET', 'POST'])
 def login(request):
     # Page used to login
-    stat = status.HTTP_403_FORBIDDEN
+    stat = 403 #status.HTTP_403_FORBIDDEN
     user = None
     if request.method == 'POST':
         username = request.data.get('username').strip().lower()
         password = request.data.get('password').strip() # TODO: hash this password
         user = utils.authenticate_user(username, password)
         if user != None:
-            stat = status.HTTP_202_ACCEPTED
+            stat = 202 #status.HTTP_202_ACCEPTED
         else:
-            stat = status.HTTP_403_FORBIDDEN
+            stat = 403 #status.HTTP_403_FORBIDDEN
     return Response(user, stat)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def newUserRegistration(request):
-    stat = status.HTTP_403_FORBIDDEN
+    stat = 403 #status.HTTP_403_FORBIDDEN
     # CREATE USER
     if request.method == 'POST':
         #test = request.POST['username']
@@ -85,9 +85,9 @@ def newUserRegistration(request):
 
         isCreated = utils.add_user(username, password, name, bio, location, pictureURL)
         if isCreated:
-            stat = status.HTTP_201_CREATED
+            stat = 201 #status.HTTP_201_CREATED
         else:
-            stat = status.HTTP_400_BAD_REQUEST
+            stat = 400 #status.HTTP_400_BAD_REQUEST
     # UPDATE USER
     elif request.method == 'PUT':
         username = request.data.get("username").strip().lower()
@@ -99,16 +99,16 @@ def newUserRegistration(request):
 
         isUpdated = utils.update_user(username, password, name, bio, location, pictureURL)
         if isUpdated:
-            stat = status.HTTP_200_OK
+            stat = 200 #status.HTTP_200_OK
         else:
-            stat = status.HTTP_400_BAD_REQUEST
+            stat = 400 #status.HTTP_400_BAD_REQUEST
     # DELETE USER
     elif request.method == 'DELETE':
         isDeleted = utils.delete_user(request.data) # this one only sends in username
         if isDeleted:
-            stat = status.HTTP_200_OK
+            stat = 200 #status.HTTP_200_OK
         else:
-            stat = status.HTTP_400_BAD_REQUEST
+            stat = 400 #status.HTTP_400_BAD_REQUEST
     # return status based on previous actions or HTTP_403_FORBIDDEN
     return Response(request.data, stat)
 
@@ -152,9 +152,9 @@ def newRecipe(request):
 
         isCreated = utils.add_recipe(recipeOwner, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL)
         if isCreated:
-            status = 'HTTP_201_CREATED'
+            status = 201 #'HTTP_201_CREATED'
         else:
-            status = 'HTTP_400_BAD_REQUEST'
+            status = 400 #'HTTP_400_BAD_REQUEST'
 
         return Response(context, status=status)
 
