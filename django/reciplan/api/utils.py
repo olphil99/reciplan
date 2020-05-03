@@ -124,18 +124,21 @@ def get_user_metadata(loggedInUser):
 def af1():
     # Returns a dictionary of key: location, value: number of recipes from this location that are in favorites of all users
     # It is kind of an leaderboard
-    conn = sqlite3.connect('../db.sqlite3')
+    conn = sqlite3.connect('db.sqlite3')
     c = conn.cursor()
-    c.execute("""Select location, COUNT(userID)
-            FROM api_userfavorites NATURAL JOIN (SELECT location, userID
-            FROM api_ownsrecipes NATURAL JOIN api_users)""")
+    queryResults = c.execute("""Select location, COUNT(userID)
+            FROM api_userfavorites, (SELECT location, recipeID
+            FROM api_ownsrecipes NATURAL JOIN api_users) AS recipelocation
+            WHERE recipelocation.recipeID = api_userfavorites.recipeID""").fetchmany(10) # .fetchall()
 
     leaderboard = dict()
-    queryResults = c.fetchall()
+    # queryResults = c.fetchall()
+    # for row in c.execute("Select location, COUNT(userID) FROM api_userfavorites, (SELECT location, recipeID FROM api_ownsrecipes NATURAL JOIN api_users) AS recipelocation WHERE api_userfavorites.recipeID = recipelocation.recipeID"):
     for row in queryResults:
         print(row)
         address = row[0]
         state = row[0].split(" ")[-2]
         leaderboard[state] = row[1]
 
+    conn.close()
     return leaderboard
