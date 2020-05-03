@@ -10,6 +10,8 @@ import EditProfile from './editprofile.js';
 import Cart from './cart.js';
 import Login from './login.js';
 import NewUser from './newuser.js';
+import MyRecipes from './myrecipes.js';
+import Search from './search.js';
 
 class App extends Component {
   constructor(props) {
@@ -41,8 +43,8 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={NewUser} />
             <Route path="/editprofile" component={EditProfile} />
-            <Route path="/myrecipes" component={NewRecipe} />
-            <Route path="/search" component={NewRecipe} />
+            <Route path="/myrecipes" component={MyRecipes} />
+            <Route path="/search" component={Search} />
           </Switch>
         </React.Fragment>
       </Router>

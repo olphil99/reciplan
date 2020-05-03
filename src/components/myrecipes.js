@@ -9,7 +9,7 @@ import NotLoggedIn from './notloggedin.js';
  * Edit user profile
  * @extends Component
  */
-class EditProfile extends Component {
+class MyRecipes extends Component {
   constructor(props) {
     super(props);
     let userObj = null;
@@ -134,4 +134,4 @@ class EditProfile extends Component {
   }
 }
 
-export default EditProfile;
+export default MyRecipes;

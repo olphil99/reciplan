@@ -8,7 +8,7 @@ import { SERVICE_URL } from '../utils.js';
  * Displays the search results for recipe search.
  * @extends Component
  */
-class SearchResults extends Component {
+class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,4 +25,4 @@ class SearchResults extends Component {
   }
 }
 
-export default SearchResults;
+export default Search;
