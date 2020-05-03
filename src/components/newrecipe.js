@@ -25,7 +25,7 @@ class NewRecipe extends Component {
 
   async postNewRecipe(recipe) {
     try {
-      const response = await axios.post(`${SERVICE_URL}/results/`, recipe); // change to an updated url
+      const response = await axios.post(`${SERVICE_URL}/newRecipe/`, recipe);
       const data = await response.json();
       return data;
     } catch(e) {
