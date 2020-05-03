@@ -41,6 +41,8 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={NewUser} />
             <Route path="/editprofile" component={EditProfile} />
+            <Route path="/myrecipes" component={NewRecipe} />
+            <Route path="/search" component={NewRecipe} />
           </Switch>
         </React.Fragment>
       </Router>
