@@ -46,12 +46,11 @@ class NewRecipe extends Component {
       ingredients.push(ingredient);
     })
     let recipeJson = {
-      creatorId: 'test',
-      title: form['recipe-name'].value,
-      ingredients: ingredients,
-      instructions: form['instructions'].value,
-      source: null,
-      pictureURL: this.state.pictureURL
+      recipeOwner: 1,
+      recipeTitle: form['recipe-name'].value,
+      recipeIngredients: ingredients,
+      recipeInstructions: form['instructions'].value,
+      recipePictureURL: this.state.pictureURL
     };
     let response = this.postNewRecipe(recipeJson);
     // this.props.history.push('/search')

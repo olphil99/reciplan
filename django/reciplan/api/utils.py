@@ -33,10 +33,10 @@ def add_recipe(recipeOwner, recipeTitle, recipeIngredients, recipeInstructions, 
     # Adds a new recipe to SQL database
     # return True if successful, False if unsuccessful
     # generate new recipe id
-    newrecid = recipeOwner + recipeTitle + recipePictureURL
+    newrecid = recipeOwner + recipeTitle + recipePictureURL + recipeIngredients + recipeInstructions
     newrecid = newrecid.replace(" ", "")
     with connection.cursor() as cursor:
-        cursor.execute('INSERT INTO api_recipes (recipeID, title, ingredients, instructions, picture_link) VALUES (%s,%s,%s,%s,%s)', [newrecid,recipeTitle,recipeIngredients,recipeInstructions,recipePictureURL])
+        cursor.execute('INSERT INTO api_recipes (recipeID, title, ingredients, instructions, pictureLink) VALUES (%s,%s,%s,%s,%s)', [newrecid,recipeTitle,recipeIngredients,recipeInstructions,recipePictureURL])
     with connection.cursor() as cursor:
         cursor.execute('INSERT INTO api_ownsrecipes (userID, recipeID) VALUES (%s,%s)', [recipeOwner,newrecid])
     return True

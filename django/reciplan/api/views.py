@@ -141,10 +141,10 @@ def newRecipe(request):
     context = json.dumps({})
     if request.method == 'POST':
         recipeOwner = '' # TODO: logged in userID
-        recipeTitle = request.GET.get('recipeTitle').strip().lower()
-        recipeIngredients = request.GET.get('recipeIngredients').strip().lower()
-        recipeInstructions = request.GET.get('recipeInstructions').strip().lower()
-        recipePictureURL = request.GET.get('recipePictureURL').strip().lower()
+        recipeTitle = request.data.get('recipeTitle').strip().lower()
+        recipeIngredients = str(request.data.get('recipeIngredients'))
+        recipeInstructions = request.data.get('recipeInstructions').strip().lower()
+        recipePictureURL = request.data.get('recipePictureURL').strip().lower()
 
         isCreated = utils.add_recipe(recipeOwner, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL)
         if isCreated:
