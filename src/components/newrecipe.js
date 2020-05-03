@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../css/recipe.css';
 import axios from 'axios';
-import { SERVICE_URL } from '../utils.js';
+import UserProfile, { SERVICE_URL } from '../utils.js';
+import NotLoggedIn from './notloggedin.js';
 
 /**
  * Create a new recipe
@@ -12,10 +13,17 @@ import { SERVICE_URL } from '../utils.js';
 class NewRecipe extends Component {
   constructor(props) {
     super(props);
+    let userObj = null;
+    if (UserProfile.isLoggedIn()) {
+      userObj = UserProfile.getUserObject();
+    }
     this.state = {
+      user: userObj,
+      loggedIn: (userObj !== null),
       pictureURL: '',
       recipe: {},
-      ingredientRows: [<Input name="ingredient-0" id="ingredient-one" placeholder="Quantity + ingredient" key="ingredient-one" required />]
+      ingredientRows: [<Input name="ingredient-0" id="ingredient-one" placeholder="Quantity + ingredient" key="ingredient-one" required />],
+      username: userObj.username
     }
     this.validateRecipe = this.validateRecipe.bind(this);
     this.postNewRecipe = this.postNewRecipe.bind(this);
@@ -47,7 +55,7 @@ class NewRecipe extends Component {
       ingredients.push(ingredient);
     })
     let recipeJson = {
-      recipeOwner: 1, /* to do: don't hardcode */
+      recipeOwner: this.state.username, /* to do: don't hardcode */
       recipeTitle: form['recipe-name'].value,
       recipeIngredients: ingredients,
       recipeInstructions: form['instructions'].value,
@@ -69,46 +77,57 @@ class NewRecipe extends Component {
   }
 
   render() {
-    return(
-      <Container>
-        <Form onSubmit={this.validateRecipe}>
-          <FormGroup>
+    const {user, loggedIn} = this.state;
+    console.log(user)
+    let loginBtn = {};
+    if (!loggedIn) {
+      return(
+        <Container>
+          <NotLoggedIn message='In order to add recipes, please log in or sign up for our application.' children={[loginBtn]} />
+        </Container>
+      );
+    } else {
+      return(
+        <Container>
+          <Form onSubmit={this.validateRecipe}>
+            <FormGroup>
+              <Row>
+                <Col sm="3">
+                  <div className="insert-picture" onClick={this.addPicture}>
+                    <a href="/"/>
+                    Insert Picture
+                  </div>
+                </Col>
+                <Col sm="9">
+                  <Label for="recipe-name">Recipe Name</Label>
+                  <Input name="recipe-name" id="recipe-name" placeholder="Enter the name of your recipe" style={{width: '98%'}} required />
+                </Col>
+              </Row>
+            </FormGroup>
+            <FormGroup>
+              <Label for="ingredients">Ingredients</Label>
+              <Row>
+                <Col sm="11" style={{paddingRight: 0}}>
+                  {this.state.ingredientRows.map(child => child)}
+                </Col>
+                <Col className="no-padding">
+                  <Button onClick={this.addIngredients} color="success" style={{position:'absolute', bottom: 0}}>+</Button>
+                </Col>
+              </Row>
+            </FormGroup>
+            <FormGroup>
+              <Label for="instructions">Instructions</Label>
+              <Input type="textarea" name="instructions" id="instructions" placeholder="Type out the instructions for your recipe in paragraphs." style={{width: '98%'}} required />
+            </FormGroup>
             <Row>
-              <Col sm="3">
-                <div className="insert-picture" onClick={this.addPicture}>
-                  <a href="/"/>
-                  Insert Picture
-                </div>
-              </Col>
-              <Col sm="9">
-                <Label for="recipe-name">Recipe Name</Label>
-                <Input name="recipe-name" id="recipe-name" placeholder="Enter the name of your recipe" style={{width: '98%'}} required />
+              <Col sm="12">
+                <Button style={{width:'98%'}}>Submit</Button>
               </Col>
             </Row>
-          </FormGroup>
-          <FormGroup>
-            <Label for="ingredients">Ingredients</Label>
-            <Row>
-              <Col sm="11" style={{paddingRight: 0}}>
-                {this.state.ingredientRows.map(child => child)}
-              </Col>
-              <Col className="no-padding">
-                <Button onClick={this.addIngredients} color="success" style={{position:'absolute', bottom: 0}}>+</Button>
-              </Col>
-            </Row>
-          </FormGroup>
-          <FormGroup>
-            <Label for="instructions">Instructions</Label>
-            <Input type="textarea" name="instructions" id="instructions" placeholder="Type out the instructions for your recipe in paragraphs." style={{width: '98%'}} required />
-          </FormGroup>
-          <Row>
-            <Col sm="12">
-              <Button style={{width:'98%'}}>Submit</Button>
-            </Col>
-          </Row>
-        </Form>
-      </Container>
-    )
+          </Form>
+        </Container>
+      )
+    }
   }
 }
 
