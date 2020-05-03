@@ -15,6 +15,7 @@ def find_recipes(query):
     recipeNames = []
     for recipe in data:
         recipeNames.append({'recipeName':recipe.title})
+    print(str(recipeNames))
     return recipeNames
 
 def get_recipe_data(recipeID):

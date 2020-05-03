@@ -24,14 +24,16 @@ def index(request):
 @api_view(['GET', 'POST'])
 def results(request):
     # Page that shows list of search results
-    searchQuery = '' # request.GET.get('searchQuery').strip().lower() # TODO change the '' to the get request once we have something in the request
-    searchResults = utils.find_recipes(searchQuery)
-    searchResults = json.dumps(searchResults)
-    context = {
-        'searchQuery':searchQuery,
-        'searchResults':searchResults
-    }
-    context = json.dumps(context)
+    print(request.method)
+    if request.method == 'GET':
+        searchQuery = request.query_params.get('searchVal').strip().lower() # request.GET.get('searchQuery').strip().lower() # TODO change the '' to the get request once we have something in the request
+        searchResults = utils.find_recipes(searchQuery)
+        searchResults = json.dumps(searchResults)
+        context = {
+            'searchQuery':searchQuery,
+            'searchResults':searchResults
+        }
+        context = json.dumps(context)
 
     # What happens when you select a recipe
     if request.method == 'POST':
