@@ -26,7 +26,7 @@ class NewRecipe extends Component {
   async postNewRecipe(recipe) {
     try {
       const response = await axios.post(`${SERVICE_URL}/newRecipe/`, recipe);
-      const data = await response.json();
+      const data = await response;
       return data;
     } catch(e) {
       console.log('Encountered an error posting a new recipe.');
@@ -46,7 +46,7 @@ class NewRecipe extends Component {
       ingredients.push(ingredient);
     })
     let recipeJson = {
-      recipeOwner: 1,
+      recipeOwner: 1, /* to do: don't hardcode */
       recipeTitle: form['recipe-name'].value,
       recipeIngredients: ingredients,
       recipeInstructions: form['instructions'].value,

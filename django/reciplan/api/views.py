@@ -139,22 +139,20 @@ def cart(request):
 def newRecipe(request):
     # Page to add a new recipe for a logged-in user
     context = json.dumps({})
+    stat = status.HTTP_400_BAD_REQUEST
     if request.method == 'POST':
-        recipeOwner = '' # TODO: logged in userID
+        recipeOwner = request.data.get('recipeOwner') # TODO: logged in userID
         recipeTitle = request.data.get('recipeTitle').strip().lower()
-        recipeIngredients = str(request.data.get('recipeIngredients'))
+        recipeIngredients = str(request.data.get('recipeIngredients')).strip().lower()
         recipeInstructions = request.data.get('recipeInstructions').strip().lower()
         recipePictureURL = request.data.get('recipePictureURL').strip().lower()
 
         isCreated = utils.add_recipe(recipeOwner, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL)
         if isCreated:
-            status = status.HTTP_201_CREATED
-        else:
-            status = status.HTTP_400_BAD_REQUEST
+            stat = status.HTTP_201_CREATED
+        #return Response(context, status=stat)
 
-        return Response(context, status=status)
-
-    return Response(context)
+    return Response(context, status=stat)
 
 @api_view(['GET', 'POST'])
 def profile(request):
