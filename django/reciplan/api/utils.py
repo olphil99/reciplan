@@ -122,23 +122,21 @@ def get_user_metadata(loggedInUser):
     return 'not found', 'not found', 'not found', 'not found', 'not found'
 
 def af1():
-    # Returns a dictionary of key: location, value: number of recipes from this location that are in favorites of all users
-    # It is kind of an leaderboard
+    # Returns a dictionary of key: name of user, value: number of times this user's recipes have been favorited
+    # A leaderboard
     conn = sqlite3.connect('db.sqlite3')
     c = conn.cursor()
-    queryResults = c.execute("""Select location, COUNT(userID)
-            FROM api_userfavorites, (SELECT location, recipeID
-            FROM api_ownsrecipes NATURAL JOIN api_users) AS recipelocation
-            WHERE recipelocation.recipeID = api_userfavorites.recipeID""").fetchmany(10) # .fetchall()
+
+    queryResults = c.execute("""Select name, COUNT(name)
+            FROM api_userfavorites, (SELECT name, recipeID
+            FROM api_ownsrecipes NATURAL JOIN api_users) AS ownerName
+            WHERE ownerName.recipeID = api_userfavorites.recipeID
+            GROUP BY name
+            ORDER BY COUNT(name) DESC""").fetchmany(10)
 
     leaderboard = dict()
-    # queryResults = c.fetchall()
-    # for row in c.execute("Select location, COUNT(userID) FROM api_userfavorites, (SELECT location, recipeID FROM api_ownsrecipes NATURAL JOIN api_users) AS recipelocation WHERE api_userfavorites.recipeID = recipelocation.recipeID"):
     for row in queryResults:
-        print(row)
-        address = row[0]
-        state = row[0].split(" ")[-2]
-        leaderboard[state] = row[1]
+        leaderboard[row[0]] = row[1]
 
     conn.close()
     return leaderboard
