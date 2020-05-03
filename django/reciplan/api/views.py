@@ -166,3 +166,12 @@ def profile(request):
         context = json.dumps({'name':name, 'bio':bio, 'location':location, 'pictureURL':pictureURL, 'listOfRecipeNames':listOfRecipeNames})
 
     return Response(context)
+
+@api_view(['GET', 'POST'])
+def AF1(request):
+    # Advanced Function 1
+    # Kind of a leaderboard
+    # Count the number of recipes from the same location favorited by all users
+
+    leaderboard = utils.af1() # dict[location]:num recipes favorited from that area
+    return Response(json.dumps(leaderboard))

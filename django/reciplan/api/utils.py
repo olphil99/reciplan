@@ -5,6 +5,7 @@ from django.db import models
 from django.db import connection
 from .models import *
 import datetime
+import sqlite3
 
 def find_recipes(query):
     # returns a list of recipes that match the query
@@ -119,3 +120,22 @@ def get_user_metadata(loggedInUser):
         return user.name, user.bio, user.location, user.pictureURL, recipeList
     print("user not found")
     return 'not found', 'not found', 'not found', 'not found', 'not found'
+
+def af1():
+    # Returns a dictionary of key: location, value: number of recipes from this location that are in favorites of all users
+    # It is kind of an leaderboard
+    conn = sqlite3.connect('../db.sqlite3')
+    c = conn.cursor()
+    c.execute("""Select location, COUNT(userID)
+            FROM api_userfavorites NATURAL JOIN (SELECT location, userID
+            FROM api_ownsrecipes NATURAL JOIN api_users)""")
+
+    leaderboard = dict()
+    queryResults = c.fetchall()
+    for row in queryResults:
+        print(row)
+        address = row[0]
+        state = row[0].split(" ")[-2]
+        leaderboard[state] = row[1]
+
+    return leaderboard
