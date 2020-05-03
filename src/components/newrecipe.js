@@ -42,7 +42,8 @@ class NewRecipe extends Component {
     // get the ingredients
     let ingredients = [];
     this.state.ingredientRows.map(child => {
-      let ingredient = child.props.name;
+      let ingredient = child.props.id;
+      ingredient = document.getElementById(ingredient).value;
       ingredients.push(ingredient);
     })
     let recipeJson = {
