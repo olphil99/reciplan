@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-// import '../css/profile.css';
+import { Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import '../css/recipe.css';
 import axios from 'axios';
 import UserProfile, { SERVICE_URL } from '../utils.js';
 import NotLoggedIn from './notloggedin.js';
-//import { makeStyles } from '@material-ui/core/styles';
-//import Table from '@material-ui/core/Table';
-//import TableBody from '@material-ui/core/TableBody';
-//import TableCell from '@material-ui/core/TableCell';
-//import TableContainer from '@material-ui/core/TableContainer';
-//import TableHead from '@material-ui/core/TableHead';
-//import TableRow from '@material-ui/core/TableRow';
-// import Paper from '@material-ui/core/Paper';
 
 /**
- * Table of my recipes
+ * Displays the search results for recipe search.
  * @extends Component
  */
 class MyRecipes extends Component {
@@ -27,120 +19,70 @@ class MyRecipes extends Component {
     this.state = {
       user: userObj,
       loggedIn: (userObj !== null),
-      recipes: [{}]
+      my_recipes: []
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.deleteAccount = this.deleteAccount.bind(this);
-    this.updateAccount = this.updateAccount.bind(this);
+  }
+
+  async getUserRecipes() {
+    if (this.state.loggedIn) {
+      let jsonedUser = {params: {username: this.state.user.username}};
+      try {
+        const response = await axios.get(`${SERVICE_URL}/myRecipes/`, jsonedUser);
+        const data = await response;
+        var dat = JSON.parse(JSON.parse(data['data'])['recipe_list']);
+        console.log(dat);
+        var currHTML = '<table style="width:100%">';
+        for (var i = 0; i < dat.length; i++) {
+          currHTML += '<tr><td>' + dat[i]['name'] + '</td><td>' + dat[i]['recipe_id'] + '</td></tr>';
+          console.log(dat[i]['name']);
+        }
+        currHTML += '</table>';
+        document.getElementById('res').innerHTML = currHTML
+        return data;
+      } catch(e) {
+        console.log('Encountered an error searching for recipes.');
+        console.log(e.toString());
+        return {};
+      }
+    }
   }
 
   componentDidMount() {
-    axios.get(`${SERVICE_URL}/something/`, this.state.user.username).then(res => {
-        const recDat = res.data;
-        this.state.recipes = recDat;
-      }); // change to an actual backend url
+    this.getUserRecipes();
   }
 
-  handleChange(event) {
-    const target = event.target;
-    const attr = target.name;
-    const value = target.value;
-    this.setState({
-      [attr]: value
-    });
-  }
-
-  // validation should happen here as well
-  async updateAccount(event) {
-    event.preventDefault();
-    let updatedUser = {
-      creatorId: 'test',
-      username: this.state.username,
-      name: this.state.name,
-      password: this.state.password,
-      location: this.state.location,
-      bio: this.state.bio,
-      pictureURL: this.state.pictureURL
-    };
+  async runSearch() {
+    var search = document.getElementById('search-input').value;
+    //console.log(search);
+    let jsonedSearch = {params: {searchVal: search}};
     try {
-      const response = await axios.put(`${SERVICE_URL}/newUserRegistration/`, updatedUser);
-      UserProfile.setUserObject(updatedUser);
-      return "updated!";
+      const response = await axios.get(`${SERVICE_URL}/results/`, jsonedSearch);
+      const data = await response;
+      var dat = JSON.parse(JSON.parse(data['data'])['searchResults']);
+      console.log(dat);
+      var currHTML = '<table style="width:100%">';
+      for (var i = 0; i < dat.length; i++) {
+        currHTML += '<tr><td>' + dat[i]['recipeName'] + '</td></tr>';
+        console.log(dat[i]['recipeName']);
+      }
+      currHTML += '</table>';
+      document.getElementById('res').innerHTML = currHTML
+      return data;
     } catch(e) {
-      alert('Encountered an error editing your profile.');
-      return {};
-    }
-  }
-
-  async deleteAccount() {
-    try {
-      const response = await axios.delete(`${SERVICE_URL}/newUserRegistration/`, this.state.username);
-      UserProfile.setUserObject(null);
-      this.props.history.push('/signup')
-      return "deleted";
-    } catch(e) {
-      alert('Encountered an error editing your profile.');
+      console.log('Encountered an error showing recipes.');
+      console.log(e.toString());
       return {};
     }
   }
 
   render() {
-    const {user, loggedIn} = this.state;
-    console.log(user)
-    let loginBtn = {};
-    if (!loggedIn) {
-      return(
-        <Container>
-          <NotLoggedIn message='In order to view your profile, please log in or sign up for our application.' children={[loginBtn]} />
-        </Container>
-      );
-    } else {
-      return(
-        <Container>
-          <Form onSubmit={this.updateAccount}>
-            <FormGroup>
-              <Row>
-                <Col sm="3">
-                  <div className="insert-picture" onClick={this.addPicture}>
-                    <a href="/"/>
-                    Edit Picture
-                  </div>
-                </Col>
-                <Col sm="9">
-                  <FormGroup>
-                    <Label for="username">Userame</Label>
-                    <Input name="username" id="username" placeholder={user.username} style={{width: '98%'}} disabled />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="full-name">Name</Label>
-                    <Input name="name" id="full-name" placeholder='Your Name' value={this.state.name} onChange={this.handleChange} style={{width: '98%'}} required />
-                  </FormGroup>
-                </Col>
-              </Row>
-            </FormGroup>
-            <FormGroup>
-              <Label for="password">Password</Label>
-              <Input name="password" id="password" placeholder='Enter a new password' value={this.state.password} onChange={this.handleChange} style={{width: '98%'}} required />
-            </FormGroup>
-            <FormGroup>
-              <Label for="location">Location</Label>
-              <Input name="location" id="location" placeholder='Location' value={this.state.location} onChange={this.handleChange} style={{width: '98%'}} required />
-            </FormGroup>
-            <FormGroup>
-              <Label for="bio">Bio</Label>
-              <Input type="textarea" name="bio" id="instructions" placeholder="Create a bio to tell the world about yourself!" value={this.state.bio} onChange={this.handleChange} style={{width: '98%'}} required />
-            </FormGroup>
-            <Row>
-              <Col sm="12">
-                <Button style={{width:'98%'}}>Submit</Button>
-              </Col>
-            </Row>
-            <br />
-            <Button onClick={this.deleteAccount} style={{width:'98%'}}>Delete My Account</Button>
-          </Form>
-        </Container>
-      )
-    }
+    return(
+      <Container>
+        <h1> My Recipes </h1>
+        <div id="res">
+        </div>
+      </Container>
+    )
   }
 }
 

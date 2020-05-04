@@ -177,3 +177,22 @@ def AF1(request):
 
     leaderboard = utils.af1() # dict[location]:num recipes favorited from that area
     return Response(json.dumps(leaderboard))
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+def myRecipes(request):
+    if request.method == 'GET':
+        user = request.query_params.get('username')
+        answer = utils.get_user_recipes(user)
+        answer = json.dumps(answer)
+        context = {
+            'recipe_list': answer
+        }
+        context = json.dumps(context)
+        return Response(context)
+    elif request.method == 'PUT': 
+        user = request.query_params.get('username')
+    elif request.method == 'DELETE':
+        recipeid = request.data.get('recipe')
+    # To help pull and modify the recipes that I own
+    #leaderboard = utils.af1() # dict[location]:num recipes favorited from that area
+    return Response(json.dumps(leaderboard))

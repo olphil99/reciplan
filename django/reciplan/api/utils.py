@@ -125,6 +125,32 @@ def get_user_metadata(loggedInUser):
     print("user not found")
     return 'not found', 'not found', 'not found', 'not found', 'not found'
 
+def get_user_recipes(username):
+    username = int(username)
+    print(username)
+    #connection = sqlite3.connect('db.sqlite3')
+
+    #queryResults = c.execute('SELECT recipeID, title FROM (SELECT recipeID FROM api_ownsrecipes WHERE userID=%s) AS ownedRecipes NATURAL JOIN api_recipes', [username])
+    #with connection.cursor() as cursor:
+    #    cursor.execute('SELECT recipeID FROM api_ownsrecipes WHERE userID="1"')
+    connection = sqlite3.connect('db.sqlite3')
+    cursor = connection.cursor()
+    #queryResults = cursor.execute('SELECT * FROM api_users LIMIT 1')
+    #queryResults = cursor.execute('SELECT recipeID, title FROM (SELECT recipeID FROM api_ownsrecipes WHERE userID=%s) AS ownedRecipes NATURAL JOIN api_recipes', [username])
+    toReturn = []
+    queryResults = OwnsRecipes.objects.raw('SELECT userID, recipeID FROM api_ownsrecipes WHERE userID=%s',[username])
+    recipeList = []
+    for row in queryResults:
+        recipeList.append(row.recipeID)
+    for i in range(len(recipeList)):
+        singleResult = Recipes.objects.raw('SELECT recipeID, title FROM api_recipes WHERE recipeID=%s',[recipeList[i]])
+        for res in singleResult:
+            toReturn.append({'name': res.title, 'recipe_id': res.recipeID})
+    #for row in queryResults:
+        #print(str(row))
+        #toReturn.append({'name': row[1], 'recipe_id': row[0]})
+    return toReturn
+
 def af1():
     # Returns a dictionary of key: name of user, value: number of times this user's recipes have been favorited
     # A leaderboard
@@ -142,5 +168,5 @@ def af1():
     for row in queryResults:
         leaderboard[row[0]] = row[1]
 
-    conn.close()
+    #conn.close()
     return leaderboard
