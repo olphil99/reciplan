@@ -6,6 +6,7 @@ from django.db import connection
 from .models import *
 import datetime
 import sqlite3
+from random import randint
 
 def find_recipes(query):
     # returns a list of recipes that match the query
@@ -25,21 +26,35 @@ def get_recipe_data(recipeID):
     # returns recipeAuthor, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL
     # input: recipeID
     # Write SQL query here to find the recipe data
+    print(recipeID)
     data = Recipes.objects.raw('SELECT * FROM api_recipes WHERE recipeID=%s', [recipeID])
+    print("length of data" + str(len(data)))
+    if len(data) == 0:
+        data = Recipes.objects.raw('SELECT * FROM api_recipes WHERE recipeID=%s', [recipeID])
+        print("try again length of data" + str(len(data)))
     recipeTitle = data[0].title
     recipeIngredients = data[0].ingredients
     recipeInstructions = data[0].instructions
-    recipePictureURL = data[0].picture_link
+    recipePictureURL = str(data[0].pictureLink)
     data = OwnsRecipes.objects.raw('SELECT * FROM api_ownsrecipes WHERE recipeID=%s', [recipeID])
-    recipeAuthor = data[0].userID
+    recipeAuthor = data[0].userID.userID
+    #print(type(recipeAuthor))
     return recipeAuthor, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL
 
 def add_recipe(recipeOwner, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL):
     # Adds a new recipe to SQL database
     # return True if successful, False if unsuccessful
     # generate new recipe id
-    newrecid = str(recipeOwner) + recipeTitle + recipePictureURL + recipeIngredients + recipeInstructions
-    newrecid = newrecid.replace(" ", "")
+    isUnique = False
+    newrecid = 0
+    while not isUnique:
+        newrecid = randint(0,9999999999)
+        data = Recipes.objects.raw('SELECT * FROM api_recipes WHERE recipeID=%s', [newrecid])
+        if len(data) == 0:
+            isUnique = True
+    #newrecid = str(recipeOwner) + recipeTitle + recipePictureURL + recipeIngredients + recipeInstructions
+    #newrecid = newrecid.replace(" ", "")
+    newrecid = str(newrecid)
     with connection.cursor() as cursor:
         cursor.execute('INSERT INTO api_recipes (recipeID, title, ingredients, instructions, pictureLink) VALUES (%s,%s,%s,%s,%s)', [newrecid,recipeTitle,recipeIngredients,recipeInstructions,recipePictureURL])
     with connection.cursor() as cursor:

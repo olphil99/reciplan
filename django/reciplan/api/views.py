@@ -45,17 +45,18 @@ def results(request):
 @api_view(['GET', 'POST'])
 def recipe(request):
     # Page that shows the recipe selected from results
-    recipeID = '' # request.GET.get('recipeID').strip().lower()
-    recipeAuthor, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL = utils.get_recipe_data(recipeID)
-    context = {
-        'recipeAuthor':recipeAuthor,
-        'recipeTitle':recipeTitle,
-        'recipeIngredients':recipeIngredients,
-        'recipeInstructions':recipeInstructions,
-        'recipePictureURL':recipePictureURL
-    }
+    if request.method == 'GET':
+        recipeID = request.query_params.get('recipeID')
+        recipeAuthor, recipeTitle, recipeIngredients, recipeInstructions, recipePictureURL = utils.get_recipe_data(recipeID)
+        context = {
+            'recipeAuthor':recipeAuthor,
+            'recipeTitle':recipeTitle,
+            'recipeIngredients':recipeIngredients,
+            'recipeInstructions':recipeInstructions,
+            'recipePictureURL':recipePictureURL
+        }
 
-    return Response(context)
+    return Response(json.dumps(context))
 
 @api_view(['GET', 'POST'])
 def login(request):
@@ -180,6 +181,7 @@ def AF1(request):
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def myRecipes(request):
+    # To help pull and modify the recipes that I own
     if request.method == 'GET':
         user = request.query_params.get('username')
         answer = utils.get_user_recipes(user)
@@ -199,6 +201,4 @@ def myRecipes(request):
         }
         context = json.dumps(context)
         return Response(context)
-    # To help pull and modify the recipes that I own
-    #leaderboard = utils.af1() # dict[location]:num recipes favorited from that area
     return Response(json.dumps(leaderboard))
