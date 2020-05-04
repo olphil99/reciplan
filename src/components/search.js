@@ -23,16 +23,19 @@ class Search extends Component {
     try {
       const response = await axios.get(`${SERVICE_URL}/results/`, jsonedSearch);
       const data = await response;
-      var dat = data.searchResults;
+      var dat = JSON.parse(JSON.parse(data['data'])['searchResults']);
+      console.log(dat);
       var currHTML = '<table style="width:100%">';
       for (var i = 0; i < dat.length; i++) {
-        currHTML += '<tr>' + dat[i].recipeName + '</tr>';
+        currHTML += '<tr><td>' + dat[i]['recipeName'] + '</td></tr>';
+        console.log(dat[i]['recipeName']);
       }
       currHTML += '</table>';
       document.getElementById('res').innerHTML = currHTML
       return data;
     } catch(e) {
       console.log('Encountered an error searching for recipes.');
+      console.log(e.toString());
       return {};
     }
   }
