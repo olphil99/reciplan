@@ -21,6 +21,20 @@ class MyRecipes extends Component {
       loggedIn: (userObj !== null),
       my_recipes: []
     }
+    this.edit = this.edit.bind(this);
+    this.delete = this.delete.bind(this);
+  }
+
+  edit() {
+    //e.preventDefault();
+    console.log("dfssdffd");
+    //console.log(e.target.name);
+  }
+
+  delete() {
+    //e.preventDefault();
+    //console.log(e.target.name);
+    console.log("dfsdfd");
   }
 
   async getUserRecipes() {
@@ -33,7 +47,7 @@ class MyRecipes extends Component {
         console.log(dat);
         var currHTML = '<table style="width:100%">';
         for (var i = 0; i < dat.length; i++) {
-          currHTML += '<tr><td>' + '<Button onClick={this.runSearch} name="' + dat[i]['recipe_id'] + '" color="success" class="edit">Edit</Button>' + '</td><td>' + '<Button onClick={this.runSearch} name="' + dat[i]['recipe_id'] + '" color="success" class="delete">Delete</Button>' + '</td><td>' + dat[i]['name'] + '</td><td>' + dat[i]['recipe_id'] + '</td></tr>';
+          currHTML += '<tr><td>' + '<Button onClick={this.edit} name="' + dat[i]['recipe_id'] + '" color="success" class="edit">Edit</Button>' + '</td><td>' + '<Button onClick={this.delete} name="' + dat[i]['recipe_id'] + '" color="success" class="delete">Delete</Button>' + '</td><td>' + dat[i]['name'] + '</td><td>' + dat[i]['recipe_id'] + '</td></tr>';
           console.log(dat[i]['name']);
         }
         currHTML += '</table>';
@@ -79,6 +93,7 @@ class MyRecipes extends Component {
     return(
       <Container>
         <h1> My Recipes </h1>
+        <Button onClick={this.edit}>try</Button>
         <div id="res">
         </div>
       </Container>
