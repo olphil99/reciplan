@@ -40,10 +40,6 @@ class Search extends Component {
     }
   }
 
-  async validateRecipe(event) {
-    event.preventDefault();
-  }
-
   render() {
     return(
       <Container>
