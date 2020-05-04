@@ -19,22 +19,20 @@ class MyRecipes extends Component {
     this.state = {
       user: userObj,
       loggedIn: (userObj !== null),
-      my_recipes: []
+      my_recipes: [<h1>TEdsdsfadfsafds</h1>,<h1>vffv</h1>]
     }
     this.edit = this.edit.bind(this);
     this.delete = this.delete.bind(this);
   }
 
-  edit() {
-    //e.preventDefault();
-    console.log("dfssdffd");
-    //console.log(e.target.name);
+  async edit(e) {
+    console.log(e.target.name);
   }
 
-  delete() {
-    //e.preventDefault();
-    //console.log(e.target.name);
-    console.log("dfsdfd");
+  async delete(e) {
+    console.log(e.target.name);
+    axios.delete(`${SERVICE_URL}/myRecipes/`, { data: {recipe_id: e.target.name }})
+    this.getUserRecipes();
   }
 
   async getUserRecipes() {
@@ -44,14 +42,12 @@ class MyRecipes extends Component {
         const response = await axios.get(`${SERVICE_URL}/myRecipes/`, jsonedUser);
         const data = await response;
         var dat = JSON.parse(JSON.parse(data['data'])['recipe_list']);
-        console.log(dat);
-        var currHTML = '<table style="width:100%">';
+        let t = [];
         for (var i = 0; i < dat.length; i++) {
-          currHTML += '<tr><td>' + '<Button onClick={this.edit} name="' + dat[i]['recipe_id'] + '" color="success" class="edit">Edit</Button>' + '</td><td>' + '<Button onClick={this.delete} name="' + dat[i]['recipe_id'] + '" color="success" class="delete">Delete</Button>' + '</td><td>' + dat[i]['name'] + '</td><td>' + dat[i]['recipe_id'] + '</td></tr>';
-          console.log(dat[i]['name']);
+          t.push(<div key={dat[i]['recipe_id']}><Button key={dat[i]['recipe_id'] + 'edit'} onClick={this.edit} name={dat[i]['recipe_id']} color="success" className="edit">Edit</Button><Button key={dat[i]['recipe_id'] + 'delete'} onClick={this.delete} name={dat[i]['recipe_id']} color="danger" className="delete">Delete</Button>{dat[i]['name']}{dat[i]['recipe_id']}</div>);
         }
-        currHTML += '</table>';
-        document.getElementById('res').innerHTML = currHTML
+        console.log(t);
+        this.setState({ my_recipes: t });
         return data;
       } catch(e) {
         console.log('Encountered an error searching for recipes.');
@@ -65,37 +61,11 @@ class MyRecipes extends Component {
     this.getUserRecipes();
   }
 
-  async runSearch() {
-    var search = document.getElementById('search-input').value;
-    //console.log(search);
-    let jsonedSearch = {params: {searchVal: search}};
-    try {
-      const response = await axios.get(`${SERVICE_URL}/results/`, jsonedSearch);
-      const data = await response;
-      var dat = JSON.parse(JSON.parse(data['data'])['searchResults']);
-      console.log(dat);
-      var currHTML = '<table style="width:100%">';
-      for (var i = 0; i < dat.length; i++) {
-        currHTML += '<tr><td>' + dat[i]['recipeName'] + '</td></tr>';
-        console.log(dat[i]['recipeName']);
-      }
-      currHTML += '</table>';
-      document.getElementById('res').innerHTML = currHTML
-      return data;
-    } catch(e) {
-      console.log('Encountered an error showing recipes.');
-      console.log(e.toString());
-      return {};
-    }
-  }
-
   render() {
     return(
       <Container>
         <h1> My Recipes </h1>
-        <Button onClick={this.edit}>try</Button>
-        <div id="res">
-        </div>
+          {this.state.my_recipes.map(child => child)}
       </Container>
     )
   }

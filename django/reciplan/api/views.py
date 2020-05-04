@@ -192,7 +192,13 @@ def myRecipes(request):
     elif request.method == 'PUT': 
         user = request.query_params.get('username')
     elif request.method == 'DELETE':
-        recipeid = request.data.get('recipe')
+        recipeid = request.data.get('recipe_id')
+        res = utils.delete_recipe(recipeid)
+        context = {
+            'deleted': res
+        }
+        context = json.dumps(context)
+        return Response(context)
     # To help pull and modify the recipes that I own
     #leaderboard = utils.af1() # dict[location]:num recipes favorited from that area
     return Response(json.dumps(leaderboard))

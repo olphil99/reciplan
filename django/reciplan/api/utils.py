@@ -151,6 +151,13 @@ def get_user_recipes(username):
         #toReturn.append({'name': row[1], 'recipe_id': row[0]})
     return toReturn
 
+def delete_recipe(recipeID):
+    # Remove given recipeID from Cart Table
+    # return True if successful, false if unsuccessful
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM api_recipes WHERE recipeID = %s", [recipeID])
+    return True
+
 def af1():
     # Returns a dictionary of key: name of user, value: number of times this user's recipes have been favorited
     # A leaderboard
