@@ -33,7 +33,7 @@ class MyRecipes extends Component {
         console.log(dat);
         var currHTML = '<table style="width:100%">';
         for (var i = 0; i < dat.length; i++) {
-          currHTML += '<tr><td>' + '<Button onClick={this.runSearch} color="success">Edit</Button>' + '</td><td>' + '<Button onClick={this.runSearch} color="success">Delete</Button>' + '</td><td>' + dat[i]['name'] + '</td><td>' + dat[i]['recipe_id'] + '</td></tr>';
+          currHTML += '<tr><td>' + '<Button onClick={this.runSearch} name="' + dat[i]['recipe_id'] + '" color="success" class="edit">Edit</Button>' + '</td><td>' + '<Button onClick={this.runSearch} name="' + dat[i]['recipe_id'] + '" color="success" class="delete">Delete</Button>' + '</td><td>' + dat[i]['name'] + '</td><td>' + dat[i]['recipe_id'] + '</td></tr>';
           console.log(dat[i]['name']);
         }
         currHTML += '</table>';
