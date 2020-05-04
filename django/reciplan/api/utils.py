@@ -11,7 +11,10 @@ def find_recipes(query):
     # returns a list of recipes that match the query
     # runs a SQL query against our DB to find the closest matches
     # input: query is a lower-case string
+    query = "%" + query + "%"
     data = Recipes.objects.raw('SELECT * FROM api_recipes WHERE title LIKE %s', [query])
+    #data = Recipes.objects.raw('SELECT * FROM api_recipes LIMIT 10;')
+    #data = Recipes.objects.raw('SELECT * FROM api_recipes WHERE CONTAINS(title, "apple");')
     recipeNames = []
     for recipe in data:
         recipeNames.append({'recipeName':recipe.title})
