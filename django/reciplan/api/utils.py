@@ -186,9 +186,11 @@ def af1():
             GROUP BY name
             ORDER BY COUNT(name) DESC""").fetchmany(10)
 
-    leaderboard = dict()
+    #leaderboard = dict()
+    leaderboard = []
     for row in queryResults:
-        leaderboard[row[0]] = row[1]
+        #leaderboard[row[0]] = row[1]
+        leaderboard.append({"name": row[0], "count": row[1]})
 
     #conn.close()
     return leaderboard
