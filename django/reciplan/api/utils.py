@@ -85,6 +85,14 @@ def delete_from_cart(recipeID):
         cursor.execute("UPDATE api_carts SET recipeIDs = REPLACE(recipeIDs, %s, ''), dateUpdated = %s", [recipeID,date])
     return True
 
+def delete_from_user_cart(username, recipeID):
+    # Remove given recipeID from Cart Table
+    # return True if successful, false if unsuccessful
+    date = str(datetime.datetime.now())
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM api_carts WHERE userID=%s AND recipeIDs LIKE %s", [username,recipeID])
+    return True
+
 def add_to_cart(username, recipeID):
     # Remove given recipeID from Cart Table
     # return True if successful, false if unsuccessful

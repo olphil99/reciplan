@@ -31,83 +31,18 @@ class Cart extends Component {
       my_recipes: [<h1>TEdsdsfadfsafds</h1>,<h1>vffv</h1>],
       ingredients: []
     }
-    this.edit = this.edit.bind(this);
-    this.delete = this.delete.bind(this);
-    this.addIngredients = this.addIngredients.bind(this);
-    this.addPicture = this.addPicture.bind(this);
+    this.removeFromCart = this.removeFromCart.bind(this);
 
   }
 
-
-  // build the json from the form values and validate them
-  async validateRecipe(event) {
-    event.preventDefault();
-    let form = event.target;
-    console.log(form['recipe-name'].value);
-    // get the ingredients
-    let ingredients = [];
-    this.state.ingredientRows.map(child => {
-      let ingredient = child.props.id;
-      ingredient = document.getElementById(ingredient).value;
-      ingredients.push(ingredient);
-    })
-    let recipeJson = {
-      recipeId: this.state.current_recipe,
-      recipeOwner: this.state.username,
-      recipeTitle: form['recipe-name'].value,
-      recipeIngredients: ingredients,
-      recipeInstructions: form['instructions'].value,
-      recipePictureURL: this.state.pictureURL
-    };
-    let response = this.modifyRecipe(recipeJson);
-  }
-
-  addIngredients() {
-    let t = this.state.ingredientRows;
-    let id = `ingredient-${t.length}`;
-    t.push(<Input name={id} id={id} placeholder="Quantity + ingredient" key={id} required />);
-    this.setState({ ingredientRows: t });
-  }
-
-  addPicture() {
-    // add code that opens a window, uploads a file?, and stores url here
-  }
-
-  async edit(e) {
-    console.log(e.target.name);
-    this.setState({ current_recipe: e.target.name });
-    let params = {params: {recipeID: e.target.name}}
-    try {
-        const response = await axios.get(`${SERVICE_URL}/recipe/`, params);
-        const data = await response;
-        console.log(data);
-        var dat = JSON.parse(data['data']);
-        console.log(dat);
-        document.getElementById('recipe-name').value = dat.recipeTitle;
-        document.getElementById('instructions').value = dat.recipeInstructions;
-        var ingredients = dat.recipeIngredients.split(',');
-        for (var i = 0; i < ingredients.length; i++) {
-          var ingredient = ingredients[i].replace('[','').replace(']','').replace('\'','').replace('\'','').trim(); // May need to pay attention to this
-          if (i != 0) {
-            this.addIngredients();
-          }
-          document.getElementById('ingredient-' + i.toString()).value = ingredient;
-        }
-        return data;
-      } catch(e) {
-        console.log('Encountered an error searching for recipes.');
-        console.log(e.toString());
-        return {};
-      }
-  }
-
-  async delete(e) {
-    console.log(e.target.name);
-    axios.delete(`${SERVICE_URL}/myRecipes/`, { data: {recipe_id: e.target.name }})
+  async removeFromCart(e) {
+    var jsonToQuery = { username: this.state.user.username, recipe: e.target.name};
+    axios.delete(`${SERVICE_URL}/cart/`, { data: jsonToQuery})
     this.getUserCart();
   }
 
   async getUserCart() {
+    console.log('gettingUsercart');
     if (this.state.loggedIn) {
       let jsonedUser = {params: {username: this.state.user.username}};
       try {
@@ -123,9 +58,9 @@ class Cart extends Component {
         for (var i = 0; i < dat.length; i++) {
           var curr_ing = dat[i]['ingredients'].split(',');
           for (var j = 0; j < curr_ing.length; j++) {
-            ing.push(<div key={curr_ing[j]}>{curr_ing[j]}</div>);
+            ing.push(<div key={curr_ing[j] + Math.floor(Math.random() * 1000).toString()}>{curr_ing[j]}</div>);
           }
-          t.push(<div key={dat[i]['recipe_id']}>{dat[i]['name']}</div>);
+          t.push(<div key={dat[i]['recipe_id']}><Button key={dat[i]['recipe_id'] + 'remove'} name={dat[i]['recipe_id']} onClick={this.removeFromCart} color="danger">Remove</Button>{dat[i]['name']}</div>);
         }
         console.log(t);
         this.setState({ my_recipes: t });

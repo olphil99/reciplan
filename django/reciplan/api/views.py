@@ -134,15 +134,15 @@ def cart(request):
     elif request.method == 'DELETE': # deleting an item from cart
         #recipeID = request.POST.get('recipeToRemove').strip().lower()
         #testing
-        recipeID = 'xvhiw'
-        isDeleted = utils.delete_from_cart(recipeID)
+        loggedInUser = request.data.get('username')
+        recid = request.data.get('recipe')
+        isDeleted = utils.delete_from_user_cart(loggedInUser, recid)
+        stat = status.HTTP_400_BAD_REQUEST
         if isDeleted:
-            status = status.HTTP_201_CREATED
-        else:
-            status = status.HTTP_400_BAD_REQUEST
+            stat = status.HTTP_201_CREATED
 
         context = json.dumps({})
-        return Response(context, status=status)
+        return Response(context, status=stat)
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
