@@ -119,12 +119,19 @@ def newUserRegistration(request):
 def cart(request):
     # Cart of the logged in user
     if request.method == 'GET': # retreive items of cart
-        loggedInUser = '' # TODO: logged in userID
+        loggedInUser = request.query_params.get('username')
         cartItems, cartDateUpdated = utils.get_cart_data(loggedInUser)
         context = {'cartItems':cartItems, 'cartDateUpdated':cartDateUpdated}
         context = json.dumps(context)
         return Response(context)
-    elif request.method == 'POST': # deleting an item from cart
+    elif request.method == 'POST':
+        loggedInUser = request.data.get('username')
+        recid = request.data.get('recipe')
+        res = utils.add_to_cart(loggedInUser,recid)
+        context = json.dumps(res)
+        return Response(context)
+
+    elif request.method == 'DELETE': # deleting an item from cart
         #recipeID = request.POST.get('recipeToRemove').strip().lower()
         #testing
         recipeID = 'xvhiw'

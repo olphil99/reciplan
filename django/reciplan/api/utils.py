@@ -18,7 +18,7 @@ def find_recipes(query):
     #data = Recipes.objects.raw('SELECT * FROM api_recipes WHERE CONTAINS(title, "apple");')
     recipeNames = []
     for recipe in data:
-        recipeNames.append({'recipeName':recipe.title})
+        recipeNames.append({'recipeName':recipe.title, 'recipeID':recipe.recipeID})
     print(str(recipeNames))
     return recipeNames
 
@@ -63,16 +63,19 @@ def add_recipe(recipeOwner, recipeTitle, recipeIngredients, recipeInstructions, 
 
 def get_cart_data(userID):
     # Returns cartItems (list of recipeNames), cartDateUpdated for logged-in user userID
-    userID = 1
-    data = Carts.objects.raw('SELECT * FROM api_carts WHERE userID=%s LIMIT 1', [userID])
+    userID = userID
+    data = Carts.objects.raw('SELECT * FROM api_carts WHERE userID=%s', [userID])
     returnRecipes = []
     date = ''
     for cart in data:
-        returnRecipes = cart.recipeIDs.split("/")
+        mid = cart.recipeIDs.split(",")
+        for recid in mid:
+            name = Recipes.objects.raw('SELECT title, recipeID FROM api_recipes WHERE recipeID LIKE %s LIMIT 1', [recid])
+            returnRecipes.append({'name': name[0].title, 'recipe_id': recid, 'ingredients': name[0].ingredients})
         date = str(cart.dateUpdated)
     print(returnRecipes)
     print(date)
-    return returnRecipes, date
+    return returnRecipes, str(date)
 
 def delete_from_cart(recipeID):
     # Remove given recipeID from Cart Table
@@ -80,6 +83,16 @@ def delete_from_cart(recipeID):
     date = str(datetime.datetime.now())
     with connection.cursor() as cursor:
         cursor.execute("UPDATE api_carts SET recipeIDs = REPLACE(recipeIDs, %s, ''), dateUpdated = %s", [recipeID,date])
+    return True
+
+def add_to_cart(username, recipeID):
+    # Remove given recipeID from Cart Table
+    # return True if successful, false if unsuccessful
+    date = str(datetime.datetime.now())
+    data = Carts.objects.raw('SELECT * FROM api_carts WHERE recipeIDs LIKE %s AND userID=%s', [recipeID,username])
+    if len(data) == 0:
+        with connection.cursor() as cursor:
+            cursor.execute('INSERT INTO api_carts (userID, recipeIDs, dateUpdated) VALUES (%s,%s,%s)', [username,recipeID,date])
     return True
 
 def authenticate_user(username, password):

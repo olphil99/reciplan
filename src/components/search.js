@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import '../css/recipe.css';
 import axios from 'axios';
-import { SERVICE_URL } from '../utils.js';
+import UserProfile, { SERVICE_URL } from '../utils.js';
+import NotLoggedIn from './notloggedin.js';
 
 /**
  * Displays the search results for recipe search.
@@ -11,9 +12,31 @@ import { SERVICE_URL } from '../utils.js';
 class Search extends Component {
   constructor(props) {
     super(props);
+    let userObj = null;
+    if (UserProfile.isLoggedIn()) {
+      userObj = UserProfile.getUserObject();
+    }
     this.state = {
+      user: userObj,
+      loggedIn: (userObj !== null),
       returnedRecipeNames: []
     }
+    this.runSearch = this.runSearch.bind(this);
+    this.addToCart = this.addToCart.bind(this);
+  }
+
+  async addToCart(e) {
+    var toAdd = e.target.name;
+    var jsonToQuery = { username: this.state.user.username, recipe: toAdd};
+    try {
+        const response = await axios.post(`${SERVICE_URL}/cart/`, jsonToQuery);
+        const data = await response;
+        return data;
+      } catch(e) {
+        console.log('Encountered an error searching for recipes.');
+        console.log(e.toString());
+        return {};
+      }
   }
 
   async runSearch() {
@@ -26,12 +49,15 @@ class Search extends Component {
       var dat = JSON.parse(JSON.parse(data['data'])['searchResults']);
       console.log(dat);
       var currHTML = '<table style="width:100%">';
+      var t = []
       for (var i = 0; i < dat.length; i++) {
+        t.push(<div key={dat[i]['recipeID']}><Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToCart} name={dat[i]['recipeID']} color="success" className="edit">Add</Button>{dat[i]['recipeName']}</div>);
         currHTML += '<tr><td>' + dat[i]['recipeName'] + '</td></tr>';
         console.log(dat[i]['recipeName']);
       }
       currHTML += '</table>';
-      document.getElementById('res').innerHTML = currHTML
+      this.setState({ returnedRecipeNames: t });
+      //document.getElementById('res').innerHTML = currHTML
       return data;
     } catch(e) {
       console.log('Encountered an error searching for recipes.');
@@ -53,6 +79,9 @@ class Search extends Component {
           </Col>
         </Row>
         <Row>
+          <Col>
+            {this.state.returnedRecipeNames.map(child => child)}
+          </Col>
           <div id="res">
           </div>
         </Row>
