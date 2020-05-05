@@ -192,7 +192,18 @@ def myRecipes(request):
         context = json.dumps(context)
         return Response(context)
     elif request.method == 'PUT': 
-        user = request.query_params.get('username')
+        user = request.data.get('username')
+        recipeID = request.data.get('recipeId');
+        recipeTitle = request.data.get('recipeTitle');
+        recipeIngredients = request.data.get('recipeIngredients');
+        recipeInstructions = request.data.get('recipeInstructions');
+        pictureURL = request.data.get('recipePictureURL');
+        answer = utils.update_recipe(recipeID, recipeTitle, recipeIngredients, recipeInstructions, pictureURL)
+        context = {
+            'modified': answer
+        }
+        context = json.dumps(context)
+        return Response(context)
     elif request.method == 'DELETE':
         recipeid = request.data.get('recipe_id')
         res = utils.delete_recipe(recipeid)

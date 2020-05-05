@@ -173,6 +173,11 @@ def delete_recipe(recipeID):
         cursor.execute("DELETE FROM api_recipes WHERE recipeID = %s", [recipeID])
     return True
 
+def update_recipe(recipeID, recipeName, ingredients, instructions, pictureLink):
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE api_recipes SET title=%s, ingredients=%s, instructions=%s, pictureLink=%s WHERE recipeID = %s", [recipeName,str(ingredients),instructions,pictureLink,recipeID])
+    return True
+
 def af1():
     # Returns a dictionary of key: name of user, value: number of times this user's recipes have been favorited
     # A leaderboard

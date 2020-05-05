@@ -20,11 +20,77 @@ class MyRecipes extends Component {
     this.state = {
       user: userObj,
       loggedIn: (userObj !== null),
+      pictureURL: '',
+      recipe: {},
+      ingredientRows: [<Input name="ingredient-0" id="ingredient-0" placeholder="Quantity + ingredient" key="ingredient-0" required />],
+      username: userObj.username,
       my_recipes: [<h1>TEdsdsfadfsafds</h1>,<h1>vffv</h1>],
       current_recipe: null
     }
     this.edit = this.edit.bind(this);
     this.delete = this.delete.bind(this);
+    this.resetFields = this.resetFields.bind(this);
+
+    this.validateRecipe = this.validateRecipe.bind(this);
+    this.modifyRecipe = this.modifyRecipe.bind(this);
+    this.addIngredients = this.addIngredients.bind(this);
+    this.addPicture = this.addPicture.bind(this);
+
+  }
+
+  resetFields() {
+    this.setState({ ingredientRows: [<Input name="ingredient-0" id="ingredient-0" placeholder="Quantity + ingredient" key="ingredient-0" required />] });
+    this.getElementById('recipe-name').value = '';
+    this.setState({ current_recipe: null});
+    this.getElementById('instructions').value = '';
+    this.getElementById('ingredient-0').value = '';
+  }
+
+  async modifyRecipe(recipe) {
+    try {
+      const response = await axios.put(`${SERVICE_URL}/myRecipes/`, recipe);
+      const data = await response;
+      this.getUserRecipes();
+      this.resetFields();
+      return data;
+    } catch(e) {
+      console.log('Encountered an error modifying recipe.');
+      return {};
+    }
+  }
+
+  // build the json from the form values and validate them
+  async validateRecipe(event) {
+    event.preventDefault();
+    let form = event.target;
+    console.log(form['recipe-name'].value);
+    // get the ingredients
+    let ingredients = [];
+    this.state.ingredientRows.map(child => {
+      let ingredient = child.props.id;
+      ingredient = document.getElementById(ingredient).value;
+      ingredients.push(ingredient);
+    })
+    let recipeJson = {
+      recipeId: this.state.current_recipe,
+      recipeOwner: this.state.username,
+      recipeTitle: form['recipe-name'].value,
+      recipeIngredients: ingredients,
+      recipeInstructions: form['instructions'].value,
+      recipePictureURL: this.state.pictureURL
+    };
+    let response = this.modifyRecipe(recipeJson);
+  }
+
+  addIngredients() {
+    let t = this.state.ingredientRows;
+    let id = `ingredient-${t.length}`;
+    t.push(<Input name={id} id={id} placeholder="Quantity + ingredient" key={id} required />);
+    this.setState({ ingredientRows: t });
+  }
+
+  addPicture() {
+    // add code that opens a window, uploads a file?, and stores url here
   }
 
   async edit(e) {
@@ -37,10 +103,16 @@ class MyRecipes extends Component {
         console.log(data);
         var dat = JSON.parse(data['data']);
         console.log(dat);
-        // this.setState({ current_recipe: dat });
         document.getElementById('recipe-name').value = dat.recipeTitle;
         document.getElementById('instructions').value = dat.recipeInstructions;
-        document.getElementById('ingredient-one').value = dat.recipeIngredients;
+        var ingredients = dat.recipeIngredients.split(',');
+        for (var i = 0; i < ingredients.length; i++) {
+          var ingredient = ingredients[i].replace('[','').replace(']','').replace('\'','').replace('\'','').trim(); // May need to pay attention to this
+          if (i != 0) {
+            this.addIngredients();
+          }
+          document.getElementById('ingredient-' + i.toString()).value = ingredient;
+        }
         return data;
       } catch(e) {
         console.log('Encountered an error searching for recipes.');
@@ -84,10 +156,45 @@ class MyRecipes extends Component {
   render() {
     return(
       <Container>
+        <h1> Edit Recipe </h1>
+        <Form onSubmit={this.validateRecipe}>
+          <FormGroup>
+            <Row>
+              <Col sm="3">
+                <div className="insert-picture" onClick={this.addPicture}>
+                  <a href="/"/>
+                  Insert Picture
+                </div>
+              </Col>
+              <Col sm="9">
+                <Label for="recipe-name">Recipe Name</Label>
+                <Input name="recipe-name" id="recipe-name" placeholder="Enter the name of your recipe" style={{width: '98%'}} required />
+              </Col>
+            </Row>
+          </FormGroup>
+          <FormGroup>
+            <Label for="ingredients">Ingredients</Label>
+            <Row>
+              <Col sm="11" style={{paddingRight: 0}}>
+                {this.state.ingredientRows.map(child => child)}
+              </Col>
+              <Col className="no-padding">
+                <Button onClick={this.addIngredients} color="success" style={{position:'absolute', bottom: 0}}>+</Button>
+              </Col>
+            </Row>
+          </FormGroup>
+          <FormGroup>
+            <Label for="instructions">Instructions</Label>
+            <Input type="textarea" name="instructions" id="instructions" placeholder="Type out the instructions for your recipe in paragraphs." style={{width: '98%'}} required />
+          </FormGroup>
+          <Row>
+            <Col sm="12">
+              <Button style={{width:'98%'}}>Submit</Button>
+            </Col>
+          </Row>
+        </Form>
         <Row>
           <Col md="12">
-            <h1> Edit Recipe </h1>
-            <NewRecipe/>
             <h1> My Recipes </h1>
             {this.state.my_recipes.map(child => child)}
           </Col>
