@@ -43,11 +43,19 @@ class Search extends Component {
   render() {
     return(
       <Container>
-        <Label for="search-input">Recipe Name</Label>
-        <Input name="search-input" id="search-input" placeholder="Search for a recipe" style={{width: '98%'}} required />
-        <Button onClick={this.runSearch} color="success" style={{position:'absolute', bottom: 0}}>Search</Button>
-        <div id="res">
-        </div>
+        <Label for="search-input">Search</Label>
+        <Row>
+          <Col md="8">
+            <Input name="search-input" id="search-input" placeholder="Search for a recipe" style={{width: '98%'}} required />
+          </Col>
+          <Col md="4">
+            <Button onClick={this.runSearch} color="success" style={{position:'absolute', bottom: 0}}>Search</Button>
+          </Col>
+        </Row>
+        <Row>
+          <div id="res">
+          </div>
+        </Row>
       </Container>
     )
   }
