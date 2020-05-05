@@ -40,10 +40,10 @@ class MyRecipes extends Component {
 
   resetFields() {
     this.setState({ ingredientRows: [<Input name="ingredient-0" id="ingredient-0" placeholder="Quantity + ingredient" key="ingredient-0" required />] });
-    this.getElementById('recipe-name').value = '';
+    document.getElementById('recipe-name').value = '';
     this.setState({ current_recipe: null});
-    this.getElementById('instructions').value = '';
-    this.getElementById('ingredient-0').value = '';
+    document.getElementById('instructions').value = '';
+    document.getElementById('ingredient-0').value = '';
   }
 
   async modifyRecipe(recipe) {
