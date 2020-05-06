@@ -66,7 +66,7 @@ class Search extends Component {
       var currHTML = '<table style="width:100%">';
       var t = []
       for (var i = 0; i < dat.length; i++) {
-        t.push(<div key={dat[i]['recipeID']}><Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToCart} name={dat[i]['recipeID']} color="success" className="edit">Cart</Button><Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToFavorites} name={dat[i]['recipeID']} color="success" className="edit">Favorite</Button>{dat[i]['recipeName']}</div>);
+        t.push(<div key={dat[i]['recipeID']}><Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToCart} name={dat[i]['recipeID']} color="success" className="edit">Cart</Button> <Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToFavorites} name={dat[i]['recipeID']} color="success" className="edit">Favorite</Button> {dat[i]['recipeName']}</div>);
         currHTML += '<tr><td>' + dat[i]['recipeName'] + '</td></tr>';
         console.log(dat[i]['recipeName']);
       }
@@ -84,7 +84,9 @@ class Search extends Component {
   render() {
     return(
       <Container>
-        <Label for="search-input">Search</Label>
+        <Row>
+          <h1>&nbsp;&nbsp;Search </h1>
+        </Row>
         <Row>
           <Col md="8">
             <Input name="search-input" id="search-input" placeholder="Search for a recipe" style={{width: '98%'}} required />
@@ -92,6 +94,9 @@ class Search extends Component {
           <Col md="4">
             <Button onClick={this.runSearch} color="success" style={{position:'absolute', bottom: 0}}>Search</Button>
           </Col>
+        </Row>
+        <Row>
+          <h2></h2>
         </Row>
         <Row>
           <Col>

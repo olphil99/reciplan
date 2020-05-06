@@ -14,7 +14,7 @@ class Leaderboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      leaderboard: [<h1>TEdsdsfadfsafds</h1>,<h1>vffv</h1>]
+      leaderboard: []
     }
   }
 

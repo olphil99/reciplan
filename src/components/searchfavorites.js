@@ -54,7 +54,6 @@ class SearchFavorites extends Component {
     return(
       <Container>
         <h1> View Others' Favorites </h1>
-        <Label for="search-input">Search</Label>
         <Row>
           <Col md="8">
             <Input name="search-input" id="search-input" placeholder="Enter a User ID" style={{width: '98%'}} required />

@@ -28,7 +28,7 @@ class Cart extends Component {
       recipe: {},
       ingredientRows: [<Input name="ingredient-0" id="ingredient-0" placeholder="Quantity + ingredient" key="ingredient-0" required />],
       username: userObj.username,
-      my_recipes: [<h1>TEdsdsfadfsafds</h1>,<h1>vffv</h1>],
+      my_recipes: [],
       ingredients: []
     }
     this.removeFromCart = this.removeFromCart.bind(this);
@@ -60,7 +60,7 @@ class Cart extends Component {
           for (var j = 0; j < curr_ing.length; j++) {
             ing.push(<div key={curr_ing[j] + Math.floor(Math.random() * 1000).toString()}>{curr_ing[j]}</div>);
           }
-          t.push(<div key={dat[i]['recipe_id']}><Button key={dat[i]['recipe_id'] + 'remove'} name={dat[i]['recipe_id']} onClick={this.removeFromCart} color="danger">Remove</Button>{dat[i]['name']}</div>);
+          t.push(<div key={dat[i]['recipe_id']}><Button key={dat[i]['recipe_id'] + 'remove'} name={dat[i]['recipe_id']} onClick={this.removeFromCart} color="danger">Remove</Button> {dat[i]['name']}</div>);
         }
         console.log(t);
         this.setState({ my_recipes: t });
