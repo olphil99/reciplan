@@ -136,7 +136,7 @@ class MyRecipes extends Component {
         var dat = JSON.parse(JSON.parse(data['data'])['recipe_list']);
         let t = [];
         for (var i = 0; i < dat.length; i++) {
-          t.push(<div key={dat[i]['recipe_id']}><Button key={dat[i]['recipe_id'] + 'edit'} onClick={this.edit} name={dat[i]['recipe_id']} color="success" className="edit">Edit</Button><Button key={dat[i]['recipe_id'] + 'delete'} onClick={this.delete} name={dat[i]['recipe_id']} color="danger" className="delete">Delete</Button>{dat[i]['name']}</div>);
+          t.push(<div key={dat[i]['recipe_id']}><Button key={dat[i]['recipe_id'] + 'edit'} onClick={this.edit} name={dat[i]['recipe_id']} color="success" className="edit">Edit</Button> <Button key={dat[i]['recipe_id'] + 'delete'} onClick={this.delete} name={dat[i]['recipe_id']} color="danger" className="delete">Delete</Button> {dat[i]['name']}</div>);
         }
         console.log(t);
         this.setState({ my_recipes: t });
