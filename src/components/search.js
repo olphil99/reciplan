@@ -66,7 +66,7 @@ class Search extends Component {
       var currHTML = '<table style="width:100%">';
       var t = []
       for (var i = 0; i < dat.length; i++) {
-        t.push(<div key={dat[i]['recipeID']}><Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToCart} name={dat[i]['recipeID']} color="success" className="edit">Cart</Button> <Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToFavorites} name={dat[i]['recipeID']} color="success" className="edit">Favorite</Button> {dat[i]['recipeName']}</div>);
+        t.push(<div key={dat[i]['recipeID']}><Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToCart} name={dat[i]['recipeID']} color="success" className="edit">+ Cart</Button> <Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToFavorites} name={dat[i]['recipeID']} color="success" className="edit">+ Favorite</Button> {dat[i]['recipeName']}</div>);
         currHTML += '<tr><td>' + dat[i]['recipeName'] + '</td></tr>';
         console.log(dat[i]['recipeName']);
       }
