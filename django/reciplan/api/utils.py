@@ -199,6 +199,30 @@ def update_recipe(recipeID, recipeName, ingredients, instructions, pictureLink):
         cursor.execute("UPDATE api_recipes SET title=%s, ingredients=%s, instructions=%s, pictureLink=%s WHERE recipeID = %s", [recipeName,str(ingredients),instructions,pictureLink,recipeID])
     return True
 
+def delete_favorite(username, recipeID):
+    # Remove given recipeID from Favorites
+    # return True if successful, false if unsuccessful
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM api_userfavorites WHERE recipeID LIKE %s AND userID=%s", [recipeID,username])
+    return True
+
+def add_favorite(username, recipeID):
+    # Add favorites
+    with connection.cursor() as cursor:
+        cursor.execute('INSERT INTO api_userfavorites (userID, recipeID) VALUES (%s,%s)', [username,recipeID])
+    return True
+
+def view_favorites(username):
+    # Remove given recipeID from Favorites
+    # return True if successful, false if unsuccessful
+    data = UserFavorites.objects.raw('SELECT * FROM api_userfavorites WHERE userID=%s', [username])
+    info = []
+    for row in data:
+        current_rec_id = row.recipeID
+        ata = Recipes.objects.raw('SELECT * FROM api_recipes WHERE recipeID LIKE %s', [current_rec_id])
+        info.append({ "name": ata[0].title, "recipe_id": ata[0].recipeID})
+    return info
+
 def af1():
     # Returns a dictionary of key: name of user, value: number of times this user's recipes have been favorited
     # A leaderboard

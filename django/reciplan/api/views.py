@@ -144,6 +144,30 @@ def cart(request):
         context = json.dumps({})
         return Response(context, status=stat)
 
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+def favorites(request):
+    # Cart of the logged in user
+    if request.method == 'GET': # retreive items of favorites
+        loggedInUser = request.query_params.get('username')
+        ans = utils.view_favorites(loggedInUser)
+        context = {'favorites': ans}
+        context = json.dumps(context)
+        return Response(context)
+    elif request.method == 'POST':
+        loggedInUser = request.data.get('username')
+        recid = request.data.get('recipe')
+        res = utils.add_favorite(loggedInUser,recid)
+        context = json.dumps(res)
+        return Response(context)
+    elif request.method == 'DELETE': # deleting an item from favorites
+        loggedInUser = request.data.get('username')
+        recid = request.data.get('recipe')
+        isDeleted = utils.delete_favorite(loggedInUser, recid)
+        stat = status.HTTP_400_BAD_REQUEST
+        if isDeleted:
+            stat = status.HTTP_201_CREATED
+        context = json.dumps({})
+        return Response(context, status=stat)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def newRecipe(request):

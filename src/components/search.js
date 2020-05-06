@@ -23,6 +23,7 @@ class Search extends Component {
     }
     this.runSearch = this.runSearch.bind(this);
     this.addToCart = this.addToCart.bind(this);
+    this.addToFavorites = this.addToFavorites.bind(this);
   }
 
   async addToCart(e) {
@@ -33,7 +34,21 @@ class Search extends Component {
         const data = await response;
         return data;
       } catch(e) {
-        console.log('Encountered an error searching for recipes.');
+        console.log('Encountered an error adding to Cart.');
+        console.log(e.toString());
+        return {};
+      }
+  }
+
+  async addToFavorites(e) {
+    var toAdd = e.target.name;
+    var jsonToQuery = { username: this.state.user.username, recipe: toAdd};
+    try {
+        const response = await axios.post(`${SERVICE_URL}/favorites/`, jsonToQuery);
+        const data = await response;
+        return data;
+      } catch(e) {
+        console.log('Encountered an error adding to Favorites.');
         console.log(e.toString());
         return {};
       }
@@ -51,7 +66,7 @@ class Search extends Component {
       var currHTML = '<table style="width:100%">';
       var t = []
       for (var i = 0; i < dat.length; i++) {
-        t.push(<div key={dat[i]['recipeID']}><Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToCart} name={dat[i]['recipeID']} color="success" className="edit">Add</Button>{dat[i]['recipeName']}</div>);
+        t.push(<div key={dat[i]['recipeID']}><Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToCart} name={dat[i]['recipeID']} color="success" className="edit">Add</Button><Button key={dat[i]['recipeID'] + 'add'} onClick={this.addToFavorites} name={dat[i]['recipeID']} color="success" className="edit">Favorite</Button>{dat[i]['recipeName']}</div>);
         currHTML += '<tr><td>' + dat[i]['recipeName'] + '</td></tr>';
         console.log(dat[i]['recipeName']);
       }

@@ -12,5 +12,6 @@ urlpatterns = [
     path('newRecipe/', views.newRecipe, name='newRecipe'),
     path('newUserRegistration/', views.newUserRegistration, name='newUserRegistration'),
     path('AF1/', views.AF1, name='AF1'),
-    path('myRecipes/', views.myRecipes, name='myRecipes')
+    path('myRecipes/', views.myRecipes, name='myRecipes'),
+    path('favorites/', views.favorites, name='favorites')
 ]
