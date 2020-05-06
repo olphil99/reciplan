@@ -83,10 +83,10 @@ class Cart extends Component {
       <Container>
         <Row>
           <Col md="12">
-            <h1> Ingredients </h1>
-            {this.state.ingredients.map(child => child)}
             <h1> My Cart </h1>
             {this.state.my_recipes.map(child => child)}
+            <h1> Ingredients </h1>
+            {this.state.ingredients.map(child => child)}
           </Col>
         </Row>
       </Container>
