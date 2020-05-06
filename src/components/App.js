@@ -14,7 +14,7 @@ import MyRecipes from './myrecipes.js';
 import Search from './search.js';
 import Leaderboard from './leaderboard.js';
 import Favorites from './favorites.js';
-
+import SearchFavorites from './searchfavorites.js';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -49,6 +49,7 @@ class App extends Component {
             <Route path="/search" component={Search} />
             <Route path="/leaderboard" component={Leaderboard} />
             <Route path="/favorites" component={Favorites} />
+            <Route path="/searchfavorites" component={SearchFavorites} />
           </Switch>
         </React.Fragment>
       </Router>
